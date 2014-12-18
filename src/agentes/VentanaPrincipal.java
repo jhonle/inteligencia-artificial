@@ -14,29 +14,13 @@ import java.awt.Font;
 
 public class VentanaPrincipal extends JFrame implements ActionListener 
 {
-	private JButton btnRegistro,btnLogin,btnSalir,btnAceptar;
+	private JButton btnRegistro,btnLogin,btnSalir;
+	public JButton btnAceptar;
 	private JLabel lblMensaje,lblNombre,lblContrasena;
 	private JPanel principal;
-	private JTextField txtNombre,txtContrasena;
+	public JTextField txtNombre,txtContrasena;//para el 
 	//private 
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-    	if(e.getSource().equals(btnRegistro))
-    	{
-    		lblMensaje.setVisible(true);
-    		lblNombre.setVisible(true);
-    		lblContrasena.setVisible(true);
-    		txtNombre.setVisible(true);
-    		txtContrasena.setVisible(true);
-    		btnAceptar.setVisible(true);
-    		
-    		btnLogin.setVisible(false);
-    		btnRegistro.setVisible(false);
-    		btnSalir.setVisible(false);  		
-    		
-    	} 
-    }
+
 	public VentanaPrincipal() 
 	{
        setBounds(50,100,400,400);
@@ -73,7 +57,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener
 	   principal.add(lblNombre);
 	   lblNombre.setVisible(false);
 	   
-	   lblContrasena = new JLabel("Ingrese la contraseña");
+	   lblContrasena = new JLabel("Ingrese la contraseï¿½a");
 	   lblContrasena.setBounds(36,189,130,30);
 	   principal.add(lblContrasena);
 	   lblContrasena.setVisible(false);
@@ -98,5 +82,66 @@ public class VentanaPrincipal extends JFrame implements ActionListener
        btnSalir.addActionListener(this);
 
 	}	
+	
+	//eventos
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+    	if(e.getSource().equals(btnRegistro))
+    	{
+    		lblMensaje.setVisible(true);
+    		lblNombre.setVisible(true);
+    		lblContrasena.setVisible(true);
+    		txtNombre.setVisible(true);
+    		txtContrasena.setVisible(true);
+    		btnAceptar.setVisible(true);
+    		
+    		btnLogin.setVisible(false);
+    		btnRegistro.setVisible(false);
+    		btnSalir.setVisible(false);  		
+    		
+    	 }else
+    	  { if(e.getSource().equals(btnLogin)){
+    		  //Parte de login 
+    		     
+    		 } 
+    	    if (e.getSource().equals(btnSalir)){
+    	    	System.exit(0);
+    	    	
+    	    }
+    	  }
+    	
+    	if(e.getSource().equals(btnAceptar)){
+    		
+    	  if(llenadoCompleto()){
+    		  
+    		  
+    		  
+    	  }
+    	}
+    	
+    	
+    	
+    	
+    	
+       }
+	
+	
+	
+	
+	/**
+	 * verifica si se lleno correctamente los campos
+	 * */
+   public boolean llenadoCompleto() {
+		
+		return true;
+	}
 
+//solo para prubas
+	public static void main (String []args){
+	
+		JFrame v = new VentanaPrincipal();
+		v.setVisible(true);
+		
+    }
 }

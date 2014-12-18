@@ -20,7 +20,7 @@ public class AgenteX extends Agent {
   private static int INTERVALO_DE_TIEMPO=60; //INTERVALO DEL TIEMPO PARA LA AGENDA, EN MINUTOS
 
   protected void setup()
-  {
+  {  
 	 ComLlenarAgenda a = new ComLlenarAgenda(agenda);
      addBehaviour(a);
      
