@@ -15,9 +15,10 @@ public class AgenteX extends Agent {
    * representa la agenda de una persona 
    * por ahora solo la de 1 dia(00:00 hrs a 23:30 hrs)
    * */
+
   protected ArrayList<Actividad> agenda;
-  
- 
+  private static int INTERVALO_DE_TIEMPO=60; //INTERVALO DEL TIEMPO PARA LA AGENDA, EN MINUTOS
+
   protected void setup()
   {
 	 ComLlenarAgenda a = new ComLlenarAgenda(agenda);
