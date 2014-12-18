@@ -19,7 +19,7 @@ public class AgenteX extends Agent {
    * por ahora solo la de 1 dia(00:00 hrs a 23:30 hrs)
    * */
   private ArrayList<Actividad> agenda;
-  private static int INTERVALO_DE_TIEMPO=60; //INTERVALO DEL TIEMPO PARA LA AGENDA, EN MINUTOS
+  private static int INTERVALO_DE_TIEMPO=10; //INTERVALO DEL TIEMPO PARA LA AGENDA, EN MINUTOS
  
   protected void setup()
   {
