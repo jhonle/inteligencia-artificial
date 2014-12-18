@@ -9,27 +9,26 @@ import java.util.ArrayList;
 import agentes.Receptor.ReceptorComportaminento;
 import agentes.emisor.EmisorComportaminento;
 
-
-
-
 public class AgenteX extends Agent {
   
   /**
    * representa la agenda de una persona 
    * por ahora solo la de 1 dia(00:00 hrs a 23:30 hrs)
    * */
-  private ArrayList<Actividad> agenda;
-  private static int INTERVALO_DE_TIEMPO=60; //INTERVALO DEL TIEMPO PARA LA AGENDA, EN MINUTOS
+  protected ArrayList<Actividad> agenda;
+  
  
   protected void setup()
   {
-     llenarAgenda();
+	 ComLlenarAgenda a = new ComLlenarAgenda(agenda);
+     addBehaviour(a);
      
      // espero antes de imprimir para que no se solape con los mensajes de jade
-     try {
+     try
+     {
 		Thread.sleep(4000);
-	 } catch (InterruptedException e) {
-		// TODO Auto-generated catch block
+	 } catch (InterruptedException e) 
+	 {		 	
 		e.printStackTrace();
 	 }
      
@@ -38,25 +37,7 @@ public class AgenteX extends Agent {
      
   }
  
-  public void llenarAgenda(){
-	  agenda= new ArrayList<Actividad>();
-	  llenarHorarios();
-  }
-  
-  
- private void llenarHorarios() 
- {
-	  for(int hora=0; hora<24;hora++)
-	  {
-	 	 for(int minutos=0; minutos<60;minutos=minutos+INTERVALO_DE_TIEMPO)
-	 	 {
-	     	 double  horaAux = (double)hora;
-	     	 double  minAux = (double)(minutos/(double)100);//todos deven ser doubles para que de como resultado un double
-	         double auxMinutos=(double)horaAux+minAux;
-	     	 agenda.add(new Actividad(auxMinutos,true));
-	      }
-	   }
-  }
+ 
 }//fin clase AgenteX
 
 /**
