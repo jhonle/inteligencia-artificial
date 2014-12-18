@@ -20,8 +20,8 @@ public class AgentePrincipal extends Agent
 
 		try 
 		{
-			AgenteX a;
-	       AgentController ac = mainContainer.createNewAgent("Agente1", a,);
+		   AgenteX a;
+	       AgentController ac = mainContainer.createNewAgent("Agente1", a,new Object[0);
   	       ac.start();
 	    }
 		catch (jade.wrapper.StaleProxyException e) 
