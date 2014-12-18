@@ -1,0 +1,5 @@
+<<<<<<< HEAD
+( ap-description  :name "localhost:1099/JADE" :ap-services (set ( ap-service  :name fipa.mts.mtp.http.std :type fipa.mts.mtp.http.std :addresses (sequence http://marce-pc:7778/acc))))
+=======
+( ap-description  :name "localhost:1099/JADE" :ap-services (set ( ap-service  :name fipa.mts.mtp.http.std :type fipa.mts.mtp.http.std :addresses (sequence http://windows7:7778/acc))))
+>>>>>>> 9d87810cf1c3ea2deb6739ed15f1d54cae986222
