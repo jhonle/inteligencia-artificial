@@ -22,6 +22,7 @@ public class Receptor extends Agent
                     System.out.println(mensaje.getContent());//toString());
                     fin = true;
                 }
+                
             }
             public boolean done()
             {

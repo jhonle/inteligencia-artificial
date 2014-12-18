@@ -20,8 +20,7 @@ public class ComLlenarAgenda extends OneShotBehaviour
 		 
 	}
 	public void llenarAgenda()
-	  {
-		  agenda= new ArrayList<Actividad>();
+	  {		 
 		  llenarHorarios();
 	  }
 	  

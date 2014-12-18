@@ -12,21 +12,26 @@ public class AgentePrincipal extends Agent
 	   
 	   VentanaPrincipal v = new VentanaPrincipal();
 	   
-	   Runtime rt = Runtime.instance();
+	   //Runtime rt = Runtime.instance();
 
-       Profile p = new ProfileImpl();
+       //Profile p = new ProfileImpl();
  
-       ContainerController mainContainer = rt.createMainContainer(p);
+      // ContainerController mainContainer = rt.createMainContainer(p);
 
 		try 
-		{
-		   AgenteX a;
-	       AgentController ac = mainContainer.createNewAgent("Agente1", a,new Object[0);
-  	       ac.start();
+		{		 
+		   Object reference = new Object();
+		   Object agentObject[] = new Object[1];
+		   agentObject[0] = reference;
+	       AgentController ac = getContainerController().createNewAgent("Prueba2","agentes.AgenteX", agentObject);
+	       AgentController ab = getContainerController().createNewAgent("prueba","agentes.AgenteX", agentObject);	      
+  	       ac.start();  	       
+  	       ab.start();
+  	       ac.suspend();
 	    }
 		catch (jade.wrapper.StaleProxyException e) 
 		{
-	        System.err.println("Error launching agent...");
+	        System.err.println("Error al ejecutar el agente...");
 	    }
    }
    protected void takeDown() 
