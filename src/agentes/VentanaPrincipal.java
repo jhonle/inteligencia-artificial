@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -110,32 +111,25 @@ public class VentanaPrincipal extends JFrame implements ActionListener
     	    	
     	    }
     	  }
-    	
-    	if(e.getSource().equals(btnAceptar)){
-    		
-    	  if(llenadoCompleto()){
-    		  
-    		  
-    		  
-    	  }
-    	}
-    	
-    	
-    	
-    	
-    	
-       }
+     }
 	
 	
 	
 	
 	/**
 	 * verifica si se lleno correctamente los campos
+	 * @return true = llenado correcto
+	 *          false= llenado incorreto y muestra mensage
 	 * */
    public boolean llenadoCompleto() {
-		
-		return true;
-	}
+       boolean res= true;	
+	   if( txtNombre.getText().equals("") || txtContrasena.getText().equals("")){
+		  res = false; 
+	       JOptionPane.showMessageDialog(null," Debe llenar  todos los campos" );
+
+	   }
+	return res;
+   }
 
 //solo para prubas
 	public static void main (String []args){

@@ -29,7 +29,8 @@ public class AgenteX extends Agent
 	 } 
      catch (InterruptedException e) 
 	 {		 	
-		e.printStackTrace();
+		//e.printStackTrace();
+		System.out.println("Erro al dormir al agente X ");
 	 }       
 	 ComLlenarAgenda a = new ComLlenarAgenda(agenda);
 	 addBehaviour(a);
