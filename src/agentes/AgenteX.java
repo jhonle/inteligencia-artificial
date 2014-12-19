@@ -5,24 +5,30 @@ import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import agentes.Receptor.ReceptorComportaminento;
 import agentes.emisor.EmisorComportaminento;
 
-public class AgenteX extends Agent
+public class AgenteX extends Agent implements ActionListener
 {
   
   /**
    * representa la agenda de una persona 
    * por ahora solo la de 1 dia(00:00 hrs a 23:30 hrs)
    * */
+  public VentanaCalendario ventanaCalendario = new VentanaCalendario();
   protected ArrayList<Actividad> agenda = new ArrayList<Actividad>();
- 
-  protected void setup()
 
-  {  
+    protected void setup()
+    {  
 	 // espero antes de imprimir para que no se solape con los mensajes de jade
+    	
+  	   ventanaCalendario.setVisible(true);  	   	  
+ 	   ventanaCalendario.btnAtras.addActionListener(this);
+ 	   ventanaCalendario.btnOrganizar.addActionListener(this); 	          
      try
      {
 		Thread.sleep(4000);		
@@ -31,7 +37,8 @@ public class AgenteX extends Agent
 	 {		 	
 		//e.printStackTrace();
 		System.out.println("Erro al dormir al agente X ");
-	 }       
+	 }
+     
 	 ComLlenarAgenda a = new ComLlenarAgenda(agenda);
 	 addBehaviour(a);
 	 comportaminentoImprimir b = new comportaminentoImprimir(agenda);
@@ -89,5 +96,24 @@ public class AgenteX extends Agent
     });
     
    }
+@Override
+  public void actionPerformed(ActionEvent e) 
+  {	
+	if(e.getSource().equals(ventanaCalendario.btnOrganizar))
+	{
+	    Serializador ser = new Serializador();
+	    ArrayList<Persona> listaPersonas = (ArrayList<Persona>)ser.leerObjeto("datos.a");
+    	
+    	String nombres = "";
+    	for(Persona p : listaPersonas)
+    	{
+    		nombres = " "+p.getNombre()+ "/n";
+    	}
+    	  VentanaOrganizar organizar = new VentanaOrganizar();
+    	  organizar.setVisible(true);
+    	  
+    	organizar.Ca
+	}
+  }
 }
 
