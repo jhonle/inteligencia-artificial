@@ -2,18 +2,16 @@ package agentes;
 
 import jade.util.leap.Serializable;
 
-public class Persona implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Persona implements Serializable
+{
 	String nombre;
-	String contraseña;
+	String contrasenia;
 
-	public Persona(String nombre, String contraseña) {
+	public Persona(String nombre, String contrasenia) 
+	{
 		super();
 		this.nombre = nombre;
-		this.contraseña = contraseña;
+		this.contrasenia = contrasenia;
 	}
 
 	/**
@@ -26,8 +24,9 @@ public class Persona implements Serializable {
 	/**
 	 * @return the contraseña
 	 */
-	public String getContraseña() {
-		return contraseña;
+	public String getContrasenia() 
+	{
+		return contrasenia;
 	}
 	
 	

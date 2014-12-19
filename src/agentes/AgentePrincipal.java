@@ -1,4 +1,4 @@
-package agentes;
+﻿package agentes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -10,51 +10,22 @@ import jade.wrapper.ContainerController;
 
 public class AgentePrincipal extends Agent implements ActionListener
 {
-	 /**
-	 *   para serializar 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	VentanaPrincipal ventanaPricipal= new VentanaPrincipal();;
-	VentanaCalendario ventanaCalendario;
-	ArrayList<Persona> listaPersonas = new ArrayList<Persona>(); // por cada persona en esta lista debera haber un ajeteX verdad?
+	   VentanaPrincipal ventanaPricipal= new VentanaPrincipal();;
+	   ArrayList<Persona> listaPersonas = new ArrayList<Persona>(); // por cada persona en esta lista debera haber un ajeteX verdad?
+      private static final long serialVersionUID = 1L;
 	    
    protected void setup()
-   {
-	   
+   {	   
 	   addControlesDeVentanas();
-	   
-	   //Runtime rt = Runtime.instance();
-
-       //Profile p = new ProfileImpl();
- 
-      // ContainerController mainContainer = rt.createMainContainer(p);
-
-		try 
-		{		 
-		   Object reference = new Object();
-		   Object agentObject[] = new Object[1];
-		   agentObject[0] = reference;
-	       AgentController ac = getContainerController().createNewAgent("Prueba2","agentes.AgenteX", agentObject);
-	       AgentController ab = getContainerController().createNewAgent("prueba","agentes.AgenteX", agentObject);	      
-  	       ac.start();  	       
-  	       ab.start();
-  	       ac.suspend();
-	    }
-		catch (jade.wrapper.StaleProxyException e) 
-		{
-	        System.err.println("Error al ejecutar el agente...");
-	    }
-    }
+   }
    protected void takeDown() 
-	{
+   {
 	   Serializador ser = new Serializador();
-	   ser.escribirObjeto(listaPersonas,"Datos.a");
+ 
+       ser.escribirObjeto(listaPersonas,"Datos.a");
 	  
-	   doDelete();
-	   
+	   doDelete();   
 	}
-   
    @Override
    public void actionPerformed(ActionEvent e)
    {
@@ -62,33 +33,32 @@ public class AgentePrincipal extends Agent implements ActionListener
 	   if(e.getSource().equals(ventanaPricipal.btnAceptar))
    	    { 
 		   String nombre;
-		   String contraseña;
+		   String contrasena;
 		   boolean aux= ventanaPricipal.llenadoCompleto();
-			 System.out.println("### "+aux); 
+		   System.out.println("### "+aux); 
 
-		   if(ventanaPricipal.llenadoCompleto()){
+		   if(ventanaPricipal.llenadoCompleto())
+		   {
 			   
 			   nombre = ventanaPricipal.txtNombre.getText();
-			   contraseña = ventanaPricipal.txtContrasena.getText();
-			 
-			 System.out.println("se creo al agente(pupuestamente) con nombre : " + nombre+" y contaseña: "+contraseña); 
-		     listaPersonas.add(new Persona(nombre, contraseña));// esto llevar al comportamoento comportamientoCrearAgente(sugerencia)
+			   contrasena = ventanaPricipal.txtContrasena.getText();
+			   ComportamientoCrearAgentes c = new ComportamientoCrearAgentes(getContainerController(),nombre);
+               addBehaviour(c);			 
+			   System.out.println("se creo al agente(pupuestamente) con nombre : " + nombre+" y contaseña: "+contrasena); 			 
+		       listaPersonas.add(new Persona(nombre, contrasena));// esto llevar al comportamoento comportamientoCrearAgente(sugerencia)		     
 			 
 		     //aqui se deberia crear al agente y guadar en la listadepersonas jhon
 		    // comportamientoCrearAgente(nombre,contraseña,listaDePersonas);//sugerencia
 		   ventanaPricipal.setVisible(false);
-		   ventanaCalendario = new VentanaCalendario();
-		   ventanaCalendario.setVisible(true);
-		     
-		   }
-         }
+		   		     
+		   }		   
+         }	 
     }
-
-
-   private void addControlesDeVentanas() {
+   private void addControlesDeVentanas() 
+   {
 	   
 	 ventanaPricipal.btnAceptar.addActionListener(this);
-     
+     ;
 	 //tal vez se necesite para cerrar correctamente la ejecucion del agente
 	 //ventanaPricipal.btnSalir.addActionListener(this);//falta hace publico ese boton e implementar el evento
    }

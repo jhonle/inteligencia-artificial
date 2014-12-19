@@ -1,14 +1,21 @@
 package agentes;
+import jade.util.leap.Serializable;
+
 import java.util.ArrayList;
 
 /**
  * clase Actividad, representa una actividad en la ageda
  * de una persona. 
  * */
-public class Actividad 
+public class Actividad implements Serializable
 {
 	
-    private double hora;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private double hora;
 	private String detalle;
 	private boolean disponible;//true=disponible false=no disponible
 	

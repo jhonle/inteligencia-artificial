@@ -12,7 +12,7 @@ public class PruebaDeSerializacion {
 		
 		for(Persona p : listaPersonas){
 			System.out.println("nombre :"+p.getNombre());
-			System.out.println("contraseña : "+p.getContraseña());
+			System.out.println("contraseña : "+p.getContrasenia());
 			System.out.println("  ");
 		}
 		
