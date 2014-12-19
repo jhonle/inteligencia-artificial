@@ -1,6 +1,12 @@
 package agentes;
 
-public class Persona {
+import jade.util.leap.Serializable;
+
+public class Persona implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String nombre;
 	String contraseña;
 

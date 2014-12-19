@@ -10,9 +10,14 @@ import jade.wrapper.ContainerController;
 
 public class AgentePrincipal extends Agent implements ActionListener
 {
-	   VentanaPrincipal ventanaPricipal= new VentanaPrincipal();;
-	   VentanaCalendario ventanaCalendario;
-	   ArrayList<Persona> listaPersonas = new ArrayList<Persona>(); // por cada persona en esta lista debera haber un ajeteX verdad?
+	 /**
+	 *   para serializar 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	VentanaPrincipal ventanaPricipal= new VentanaPrincipal();;
+	VentanaCalendario ventanaCalendario;
+	ArrayList<Persona> listaPersonas = new ArrayList<Persona>(); // por cada persona en esta lista debera haber un ajeteX verdad?
 	    
    protected void setup()
    {
@@ -43,8 +48,9 @@ public class AgentePrincipal extends Agent implements ActionListener
     }
    protected void takeDown() 
 	{
-	   //Antes De elimirar al agente se debe guardar listaDePersonas
-	   
+	   Serializador ser = new Serializador();
+	   ser.escribirObjeto(listaPersonas,"Datos.a");
+	  
 	   doDelete();
 	   
 	}
