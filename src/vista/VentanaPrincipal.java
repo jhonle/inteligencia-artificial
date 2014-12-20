@@ -1,4 +1,4 @@
-package agentes;
+package vista;
 
 import java.awt.Panel;
 import java.awt.event.ActionEvent;

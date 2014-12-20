@@ -1,4 +1,4 @@
-package agentes;
+package vista;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+
+import agentes.Persona;
 
 public class VentanaOrganizar extends JDialog  
 {

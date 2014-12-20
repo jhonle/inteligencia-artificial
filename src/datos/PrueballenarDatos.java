@@ -3,7 +3,7 @@ package datos;
 import java.util.ArrayList;
 
 import agentes.Persona;
-import agentes.Serializador;
+import datos.Serializador;
 
 public class PrueballenarDatos {
 	public static void main (String []args){

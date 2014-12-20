@@ -7,7 +7,6 @@ import org.w3c.dom.ls.LSInput;
 
 import agentes.Actividad;
 import agentes.Persona;
-import agentes.Serializador;
 
 /**
  * Clase que representa lo guardado en los Archivos 
@@ -28,10 +27,10 @@ import agentes.Serializador;
 public class BaseDatos {
 
     ArrayList<Persona>listaDePersonas;
-	HashMap<String, ArrayList<Actividad>>listaDeAgendas;
-	
+	HashMap<String, ArrayList<Actividad>>listaDeAgendas; // ejemplo de uso de HashMap: http://programandoointentandolo.com/2013/02/ejemplo-de-uso-de-hashmap-en-java-2.html
+	Serializador ser = new Serializador();	
 	public BaseDatos() {
-		Serializador ser = new Serializador();
+        ser = new Serializador();
 	
 		this.listaDePersonas=(ArrayList<Persona>)ser.leerObjeto("Datos.a");
 		this.listaDeAgendas=(HashMap<String, ArrayList<Actividad>>)ser.leerObjeto("Datos.b");
@@ -50,7 +49,11 @@ public class BaseDatos {
 	 * @param listaDePersonas the listaDePersonas to set
 	 */
 	public void setListaDePersonas(ArrayList<Persona> listaDePersonas) {
+	
 		this.listaDePersonas = listaDePersonas;
+	   
+		
+	
 	}
 
 	/**
@@ -73,7 +76,11 @@ public class BaseDatos {
 		
 	}
 	
-	public void addAgenda(){
+	public void addAgenda(String nomPersona ,ArrayList<Actividad> agenda){
+		
+		// si no existe la clave addiciona nuevo elemento 
+		// si existe la clave solo cambia su valor
+		listaDeAgendas.put(nomPersona, agenda);
 		
 	}
 	
@@ -81,16 +88,33 @@ public class BaseDatos {
 		return listaDeAgendas.get(nomPersona);
 	}
 	
-	public void GuardarDatos(){
+	public void guardarListaPersonas(){
 		
-		Serializador ser = new Serializador();
-		ser.escribirObjeto(listaDeAgendas,"Datos.b");
-		ser.escribirObjeto(listaDePersonas, "Datos.a");
+		for(Persona p : this.listaDePersonas){
+			System.out.println(" Guardando: "+ p.getNombre());
+		}
+	ser.escribirObjeto(this.listaDePersonas, "Datos.a");
+	}
+	
+    public void guardarlistaDeAgendas(){
+		
+	for(Persona p : this.listaDePersonas){
+	
+		System.out.println(" Guardando: "+ p.getNombre());
+	}
+	  ser.escribirObjeto(this.listaDeAgendas, "Datos.b");
 	}
 	
 	
 	
-	
+	public static void main(String []args){
+		
+	    BaseDatos temporal = new BaseDatos();
+	    ArrayList<Persona> listaPersonas = temporal.getListaDePersonas();
+	    for(Persona per : listaPersonas){
+	    	System.out.println(per.getNombre());
+	    }
+    }
 	
 	
 	

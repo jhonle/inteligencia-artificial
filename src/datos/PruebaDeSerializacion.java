@@ -1,15 +1,19 @@
-package agentes;
+package datos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
+import agentes.Actividad;
+import agentes.Persona;
+
 public class PruebaDeSerializacion {
    
 	public static void main (String args[]){
     
 		Serializador ser  = new Serializador();
+		if(ser.leerObjeto("Datos.a")==null){
 		
 	   /*
 	    * Aqui se crea el archivo para guardar los nombres de las personas o los agentes
@@ -18,7 +22,7 @@ public class PruebaDeSerializacion {
 		ArrayList<Persona> datos= new ArrayList<Persona>();
         ser.escribirObjeto(datos,"Datos.a");
 		JOptionPane.showMessageDialog(null,"Se creo un nuevo Archivo de Datos 'Datos.a'. Esto solo se realiza en la primera Ejecucion del Programa" );
-		
+		}
 		listarPersonaGuardadas();
 		
 		/*
@@ -27,11 +31,14 @@ public class PruebaDeSerializacion {
     	 * valor(V)=Arraylist<Actividad> = agenda de cada agente/pesona
     	 * Este se guarda en un archivo llamado Datos.b 
     	 */
-    	HashMap<String, ArrayList<Actividad>> listaDeagendas = new HashMap<String, ArrayList<Actividad>>();
+		if(ser.leerObjeto("Datos.b")==null){
+	   
+		
+		HashMap<String, ArrayList<Actividad>> listaDeagendas = new HashMap<String, ArrayList<Actividad>>();
         ser.escribirObjeto(listaDeagendas, "Datos.b");
         
 		JOptionPane.showMessageDialog(null,"Se creo un nuevo Archivo de Datos 'Datos.b'. Esto solo se realiza en la primera Ejecucion del Programa" );
-
+		}
 		
 	
     	

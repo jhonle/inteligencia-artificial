@@ -3,6 +3,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import vista.VentanaPrincipal;
+import datos.BaseDatos;
+import datos.Serializador;
 import jade.core.*;
 import jade.core.Runtime;
 import jade.wrapper.AgentController;
@@ -10,21 +13,30 @@ import jade.wrapper.ContainerController;
 
 public class AgentePrincipal extends Agent implements ActionListener
 {
+	  BaseDatos baseDeDatos;
 	  VentanaPrincipal ventanaPricipal= new VentanaPrincipal();;
-	  ArrayList<Persona> listaPersonas = new ArrayList<Persona>(); // por cada persona en esta lista debera haber un ajeteX verdad?
+	  ArrayList<Persona> listaPersonas; // por cada persona en esta lista debera haber un ajeteX verdad?
       private static final long serialVersionUID = 1L;
-	    
+	  
+      
    protected void setup()
    {	   
+
 	   CargarAgentes();
+
+	   baseDeDatos = new BaseDatos();
+	   listaPersonas = baseDeDatos.getListaDePersonas();
+
 	   addControlesDeVentanas();
    }
    protected void takeDown() 
    {
+
 	   Serializador ser = new Serializador();
- 
-       ser.escribirObjeto(listaPersonas,"Datos.a");//Guarda la clase listaPersonas al Archivo Datos.a
-       
+       ser.escribirObjeto(listaPersonas,"Datos.a");//Guarda la clase listaPersonas al Archivo Datos.a         
+       baseDeDatos.setListaDePersonas(listaPersonas);
+       System.out.println("Desde Agente Principar :"+getName());
+       baseDeDatos.guardarListaPersonas();
 	   doDelete();   
 	}
    @Override
@@ -48,9 +60,9 @@ public class AgentePrincipal extends Agent implements ActionListener
 			   System.out.println("se creo al agente(pupuestamente) con nombre : " + nombre+" y contaseña: "+contrasena); 			 
 		       listaPersonas.add(new Persona(nombre, contrasena));// esto llevar al comportamoento comportamientoCrearAgente(sugerencia)		     
 			 
-		     //aqui se deberia crear al agente y guadar en la listadepersonas jhon
-		    // comportamientoCrearAgente(nombre,contraseña,listaDePersonas);//sugerencia
-		        ventanaPricipal.setVisible(false);
+		      //aqui se deberia crear al agente y guadar en la listadepersonas jhon
+		      // comportamientoCrearAgente(nombre,contraseña,listaDePersonas);//sugerencia
+		      ventanaPricipal.setVisible(false);
 		   		     
 		   }		   
          }	 
@@ -58,7 +70,8 @@ public class AgentePrincipal extends Agent implements ActionListener
    private void addControlesDeVentanas() 
    {
 	   
-	 ventanaPricipal.btnAceptar.addActionListener(this);    
+	 ventanaPricipal.btnAceptar.addActionListener(this);
+     
 	 //tal vez se necesite para cerrar correctamente la ejecucion del agente
 	 //ventanaPricipal.btnSalir.addActionListener(this);//falta hace publico ese boton e implementar el evento
    }

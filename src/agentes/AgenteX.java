@@ -11,8 +11,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import vista.VentanaCalendario;
+import vista.VentanaOrganizar;
 import agentes.Receptor.ReceptorComportaminento;
 import agentes.emisor.EmisorComportaminento;
+import datos.BaseDatos;
+import datos.Serializador;
 
 public class AgenteX extends Agent implements ActionListener
 {
@@ -25,6 +29,7 @@ public class AgenteX extends Agent implements ActionListener
   protected ArrayList<Actividad> agenda = new ArrayList<Actividad>();
   private ArrayList<Persona> p = new ArrayList<Persona>();
   private VentanaOrganizar organizar = new VentanaOrganizar(p);  
+  protected BaseDatos baseDedatos;
     protected void setup()
     {  
 	 // espero antes de imprimir para que no se solape con los mensajes de jade    	
@@ -33,7 +38,7 @@ public class AgenteX extends Agent implements ActionListener
  	    ventanaCalendario.btnAtras.addActionListener(this);
  	    ventanaCalendario.btnOrganizar.addActionListener(this); 	 
  	    organizar.btnEnviar.addActionListener(this);
- 	    
+ 	    baseDedatos = new BaseDatos();
         try
         {
 	  	    Thread.sleep(4000);		
@@ -42,9 +47,9 @@ public class AgenteX extends Agent implements ActionListener
 	    {		 			
   		   System.out.println("Erro al dormir al agente X ");
 	    }
-     
-	    ComLlenarAgenda a = new ComLlenarAgenda(agenda);
-	    addBehaviour(a);
+        ComLlenarAgenda a = new ComLlenarAgenda(agenda);
+	    addBehaviour(a);  
+	    
    	    //comportaminentoImprimir b = new comportaminentoImprimir(agenda);
         //addBehaviour(b);
   
@@ -87,12 +92,9 @@ public class AgenteX extends Agent implements ActionListener
 
     protected void takeDown() 
     {
-     	//guarda sus datos antes de destruirce
-    	HashMap<String, ArrayList<Actividad>> listaDeagendas = new HashMap<String, ArrayList<Actividad>>();
-        listaDeagendas.put(this.getName(), agenda);
-        Serializador ser = new Serializador();
-        ser.escribirObjeto(listaDeagendas, "Datos.b");
-        
+        baseDedatos.addAgenda(this.getName(), agenda);	
+    	System.out.println("Desde algun el agente :"+getName());
+        baseDedatos.guardarlistaDeAgendas();
         doDelete();   
  	}
   @Override
@@ -100,8 +102,8 @@ public class AgenteX extends Agent implements ActionListener
   {	
 	if(e.getSource().equals(ventanaCalendario.btnOrganizar))
 	{
-	       Serializador ser = new Serializador();
-	       ArrayList<Persona> listaPersonas = (ArrayList<Persona>) ser.leerObjeto("datos.a");
+	    Serializador ser = new Serializador();
+	    ArrayList<Persona> listaPersonas = baseDedatos.getListaDePersonas();
     	
 	      organizar = new VentanaOrganizar(listaPersonas);	 
 	      organizar.btnEnviar.addActionListener(this);
