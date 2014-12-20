@@ -59,10 +59,7 @@ public class Serializador
 		catch (FileNotFoundException e) 
 		{
 		   
-			Serializador ser  = new Serializador();
-			ArrayList<Persona> datos= new ArrayList<Persona>();
-            ser.escribirObjeto(datos,"Datos.a");
-			JOptionPane.showMessageDialog(null,"Se creo un nuevo Archivo de Datos 'Datos.a'. Esto solo se realiza en la primera Ejecucion del Programa" );
+			System.out.println("## error al leer el archivo : "+nombreArchivo+"--> error :"+e.getMessage());
 
             
 		}

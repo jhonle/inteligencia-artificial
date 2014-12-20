@@ -8,6 +8,7 @@ import jade.lang.acl.ACLMessage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import agentes.Receptor.ReceptorComportaminento;
 import agentes.emisor.EmisorComportaminento;
@@ -96,7 +97,21 @@ public class AgenteX extends Agent implements ActionListener
     });
     
    }
-@Override
+
+    protected void takeDown() 
+    {
+     	//guarda sus datos antes de destruirce
+    	HashMap<String, ArrayList<Actividad>> listaDeagendas = new HashMap<String, ArrayList<Actividad>>();
+        listaDeagendas.put(this.getName(), agenda);
+        Serializador ser = new Serializador();
+        ser.escribirObjeto(listaDeagendas, "Datos.b");
+        
+        doDelete();   
+ 	}
+    
+    
+    
+  @Override
   public void actionPerformed(ActionEvent e) 
   {	
 	if(e.getSource().equals(ventanaCalendario.btnOrganizar))

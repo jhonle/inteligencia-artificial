@@ -10,8 +10,8 @@ import jade.wrapper.ContainerController;
 
 public class AgentePrincipal extends Agent implements ActionListener
 {
-	   VentanaPrincipal ventanaPricipal= new VentanaPrincipal();;
-	   ArrayList<Persona> listaPersonas = new ArrayList<Persona>(); // por cada persona en esta lista debera haber un ajeteX verdad?
+	  VentanaPrincipal ventanaPricipal= new VentanaPrincipal();;
+	  ArrayList<Persona> listaPersonas = new ArrayList<Persona>(); // por cada persona en esta lista debera haber un ajeteX verdad?
       private static final long serialVersionUID = 1L;
 	    
    protected void setup()
@@ -22,8 +22,10 @@ public class AgentePrincipal extends Agent implements ActionListener
    {
 	   Serializador ser = new Serializador();
  
-       ser.escribirObjeto(listaPersonas,"Datos.a");
+       ser.escribirObjeto(listaPersonas,"Datos.a");//Guarda la clase listaPersonas al Archivo Datos.a
 	  
+       //
+       
 	   doDelete();   
 	}
    @Override
