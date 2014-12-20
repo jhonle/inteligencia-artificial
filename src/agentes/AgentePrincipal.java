@@ -16,6 +16,7 @@ public class AgentePrincipal extends Agent implements ActionListener
 	    
    protected void setup()
    {	   
+	   CargarAgentes();
 	   addControlesDeVentanas();
    }
    protected void takeDown() 
@@ -23,8 +24,6 @@ public class AgentePrincipal extends Agent implements ActionListener
 	   Serializador ser = new Serializador();
  
        ser.escribirObjeto(listaPersonas,"Datos.a");//Guarda la clase listaPersonas al Archivo Datos.a
-	  
-       //
        
 	   doDelete();   
 	}
@@ -51,7 +50,7 @@ public class AgentePrincipal extends Agent implements ActionListener
 			 
 		     //aqui se deberia crear al agente y guadar en la listadepersonas jhon
 		    // comportamientoCrearAgente(nombre,contraseña,listaDePersonas);//sugerencia
-		   ventanaPricipal.setVisible(false);
+		        ventanaPricipal.setVisible(false);
 		   		     
 		   }		   
          }	 
@@ -59,11 +58,20 @@ public class AgentePrincipal extends Agent implements ActionListener
    private void addControlesDeVentanas() 
    {
 	   
-	 ventanaPricipal.btnAceptar.addActionListener(this);
-     ;
+	 ventanaPricipal.btnAceptar.addActionListener(this);    
 	 //tal vez se necesite para cerrar correctamente la ejecucion del agente
 	 //ventanaPricipal.btnSalir.addActionListener(this);//falta hace publico ese boton e implementar el evento
    }
-   
+   private void CargarAgentes()
+   {
+	   Serializador ser = new Serializador();
+       ArrayList<Persona> listaPersonas = (ArrayList<Persona>) ser.leerObjeto("datos.a");       
+       for(Persona p : listaPersonas)
+       {
+    	   ComportamientoCrearAgentes c = new ComportamientoCrearAgentes(getContainerController(),p.getNombre());
+           addBehaviour(c);   
+       }
+	   
+   }
 
 }

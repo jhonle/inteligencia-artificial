@@ -23,61 +23,47 @@ public class AgenteX extends Agent implements ActionListener
    * */
   public VentanaCalendario ventanaCalendario = new VentanaCalendario();
   protected ArrayList<Actividad> agenda = new ArrayList<Actividad>();
-
+  private ArrayList<Persona> p = new ArrayList<Persona>();
+  private VentanaOrganizar organizar = new VentanaOrganizar(p);  
     protected void setup()
     {  
-	 // espero antes de imprimir para que no se solape con los mensajes de jade
-    	
-  	   ventanaCalendario.setVisible(true);  	   	  
- 	   ventanaCalendario.btnAtras.addActionListener(this);
- 	   ventanaCalendario.btnOrganizar.addActionListener(this); 	          
-     try
-     {
-		Thread.sleep(4000);		
-	 } 
-     catch (InterruptedException e) 
-	 {		 	
-		//e.printStackTrace();
-		System.out.println("Erro al dormir al agente X ");
-	 }
+	 // espero antes de imprimir para que no se solape con los mensajes de jade    	
+  	    ventanaCalendario.setVisible(true);
+  	    ventanaCalendario.ColocarNombre(getLocalName());
+ 	    ventanaCalendario.btnAtras.addActionListener(this);
+ 	    ventanaCalendario.btnOrganizar.addActionListener(this); 	 
+ 	    organizar.btnEnviar.addActionListener(this);
+ 	    
+        try
+        {
+	  	    Thread.sleep(4000);		
+	    } 
+        catch (InterruptedException e) 
+	    {		 			
+  		   System.out.println("Erro al dormir al agente X ");
+	    }
      
-	 ComLlenarAgenda a = new ComLlenarAgenda(agenda);
-	 addBehaviour(a);
-	 comportaminentoImprimir b = new comportaminentoImprimir(agenda);
-     addBehaviour(b);
+	    ComLlenarAgenda a = new ComLlenarAgenda(agenda);
+	    addBehaviour(a);
+   	    //comportaminentoImprimir b = new comportaminentoImprimir(agenda);
+        //addBehaviour(b);
   
-     addBehaviour(new SimpleBehaviour()
+  /*  addBehaviour(new SimpleBehaviour()
      {
 				
 		@Override
 		public void action() 
 		{
-		
-			AID emisor = new AID();
-	        emisor.setLocalName(getLocalName());
-	        
-	        AID receptor = new AID();
-	        receptor.setLocalName("prueba");
-	        
-	        ACLMessage mensaje = new ACLMessage(ACLMessage.REQUEST); 
-
-	        mensaje.setSender(emisor);
-	        mensaje.setLanguage("Espaniol");
-	        mensaje.addReceiver(receptor);
-	        mensaje.setContent("hola");    
-	        send(mensaje);
-	        
-	        System.out.println("Enviando a receptor");
-	        System.out.println(mensaje.toString());
+				
 		}		
 		@Override
 		public boolean done() 
 		{		
 			return true;
 		}
-	});
+	});*/
      
-    addBehaviour(new SimpleBehaviour() 
+   /* addBehaviour(new SimpleBehaviour() 
     {
         private boolean fin = false;
         public void action()
@@ -96,7 +82,7 @@ public class AgenteX extends Agent implements ActionListener
             return fin;
         }
     });
-    
+    */
    }
 
     protected void takeDown() 
@@ -109,27 +95,50 @@ public class AgenteX extends Agent implements ActionListener
         
         doDelete();   
  	}
-    
-    
-    
   @Override
   public void actionPerformed(ActionEvent e) 
   {	
 	if(e.getSource().equals(ventanaCalendario.btnOrganizar))
 	{
-	    Serializador ser = new Serializador();
-	    ArrayList<Persona> listaPersonas = (ArrayList<Persona>)ser.leerObjeto("datos.a");
+	       Serializador ser = new Serializador();
+	       ArrayList<Persona> listaPersonas = (ArrayList<Persona>) ser.leerObjeto("datos.a");
     	
-    	String nombres = "";
-    	for(Persona p : listaPersonas)
-    	{
-    		nombres = " "+p.getNombre()+ "/n";
-    	}
-    	  VentanaOrganizar organizar = new VentanaOrganizar();
+	      organizar = new VentanaOrganizar(listaPersonas);	 
+	      organizar.btnEnviar.addActionListener(this);
     	  organizar.setVisible(true);
-    	  
-    	organizar.lblnombres.setText(nombres);
+
 	}
+	
+	if(e.getSource().equals(organizar.btnEnviar))
+	{
+  		 
+		ArrayList<String> lista = new ArrayList<String>();
+		lista = organizar.ComprobrarLista();
+		for(String i : lista)
+		{
+			System.out.println(i);	
+		}
+		 
+  		  
+  		/*AID emisor = new AID();
+        emisor.setLocalName(getLocalName());
+        
+        AID receptor = new AID();
+        receptor.setLocalName("prueba");
+        
+        ACLMessage mensaje = new ACLMessage(ACLMessage.REQUEST); 
+
+        mensaje.setSender(emisor);
+        mensaje.setLanguage("Espaniol");
+        mensaje.addReceiver(receptor);
+        mensaje.setContent("hola");    
+        send(mensaje);
+        
+        System.out.println("Enviando a receptor");
+        System.out.println(mensaje.toString());*/
+  		  
+  		  organizar.setVisible(false);		  		  
+	}	
   }
 }
 

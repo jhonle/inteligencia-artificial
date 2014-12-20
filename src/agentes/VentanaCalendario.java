@@ -10,21 +10,20 @@ import javax.swing.JButton;
 
 public class VentanaCalendario extends JDialog 
 {
-	private JLabel lblFecha;
+	private JLabel lblFecha,lblPersona;
 	private JTable tbTabla;
 	private JScrollPane scrooltabla;
 	private DefaultTableModel modelo; 
     private JPanel principal;
-    public JButton btnAtras,btnOrganizar;
-    
+    public JButton btnAtras,btnOrganizar;       
     
 	public VentanaCalendario() 
 	{
-		setBounds(100,200,500,700);
+		setBounds(100,20,488,576);
 		setVisible(true);
 		
 		 principal = new JPanel();
-	     principal.setBounds(50,0,500,650);
+	     principal.setBounds(50,0,500,550);
 	     principal.setLayout(null);
 	     principal.setBackground(getBackground().WHITE);
 	     getContentPane().add(principal);
@@ -36,20 +35,28 @@ public class VentanaCalendario extends JDialog
      	tbTabla= new JTable(modelo);
 
      	scrooltabla = new JScrollPane(tbTabla); 
-     	scrooltabla.setBounds(20,23,394,494);
+     	scrooltabla.setBounds(20,53,394,446);
      	principal.add(scrooltabla);
      	
      	btnAtras = new JButton("ATRAS");
-     	btnAtras.setBounds(325, 586, 89, 23);
+     	btnAtras.setBounds(325, 510, 89, 23);
      	principal.add(btnAtras);
      	
      	btnOrganizar = new JButton("organizar");
-     	btnOrganizar.setBounds(91, 586, 89, 23);
+     	btnOrganizar.setBounds(88, 510, 89, 23);
      	principal.add(btnOrganizar);
+     	
+     	lblPersona = new JLabel();
+     	lblPersona.setBounds(20, 11, 188, 23);
+     	principal.add(lblPersona);
      
      	
      	LlenarTabla();
      	
+	}
+	public void ColocarNombre(String nombre)
+	{
+		lblPersona.setText("AGENDA DE : "+nombre);
 	}
 	private void LlenarTabla()
 	{
