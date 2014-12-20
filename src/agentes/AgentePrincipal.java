@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import vista.VentanaPrincipal;
 import datos.BaseDatos;
 import jade.core.*;
 import jade.core.Runtime;
@@ -27,7 +28,8 @@ public class AgentePrincipal extends Agent implements ActionListener
    {
 	   
        baseDeDatos.setListaDePersonas(listaPersonas);
-       baseDeDatos.GuardarDatos();
+       System.out.println("Desde Agente Principar :"+getName());
+       baseDeDatos.guardarListaPersonas();
 	   doDelete();   
 	}
    @Override

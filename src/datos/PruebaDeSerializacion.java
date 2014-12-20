@@ -1,9 +1,12 @@
-package agentes;
+package datos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
+
+import agentes.Actividad;
+import agentes.Persona;
 
 public class PruebaDeSerializacion {
    

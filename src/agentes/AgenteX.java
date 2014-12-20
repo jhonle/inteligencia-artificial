@@ -11,9 +11,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import vista.VentanaCalendario;
+import vista.VentanaOrganizar;
 import agentes.Receptor.ReceptorComportaminento;
 import agentes.emisor.EmisorComportaminento;
 import datos.BaseDatos;
+import datos.Serializador;
 
 public class AgenteX extends Agent implements ActionListener
 {
@@ -105,7 +108,8 @@ public class AgenteX extends Agent implements ActionListener
     protected void takeDown() 
     {
         baseDedatos.addAgenda(this.getName(), agenda);	
-    	baseDedatos.GuardarDatos();
+    	System.out.println("Desde algun el agente :"+getName());
+        baseDedatos.guardarlistaDeAgendas();
         doDelete();   
  	}
     
