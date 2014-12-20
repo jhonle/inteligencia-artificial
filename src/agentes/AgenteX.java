@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 import agentes.Receptor.ReceptorComportaminento;
 import agentes.emisor.EmisorComportaminento;
+import datos.BaseDatos;
 
 public class AgenteX extends Agent implements ActionListener
 {
@@ -23,7 +24,8 @@ public class AgenteX extends Agent implements ActionListener
    * */
   public VentanaCalendario ventanaCalendario = new VentanaCalendario();
   protected ArrayList<Actividad> agenda = new ArrayList<Actividad>();
-
+  protected BaseDatos baseDedatos;
+  
     protected void setup()
     {  
 	 // espero antes de imprimir para que no se solape con los mensajes de jade
@@ -31,7 +33,8 @@ public class AgenteX extends Agent implements ActionListener
   	   ventanaCalendario.setVisible(true);  	   	  
  	   ventanaCalendario.btnAtras.addActionListener(this);
  	   ventanaCalendario.btnOrganizar.addActionListener(this); 	          
-     try
+ 	   baseDedatos = new BaseDatos();
+ 	   try
      {
 		Thread.sleep(4000);		
 	 } 
@@ -101,12 +104,8 @@ public class AgenteX extends Agent implements ActionListener
 
     protected void takeDown() 
     {
-     	//guarda sus datos antes de destruirce
-    	HashMap<String, ArrayList<Actividad>> listaDeagendas = new HashMap<String, ArrayList<Actividad>>();
-        listaDeagendas.put(this.getName(), agenda);
-        Serializador ser = new Serializador();
-        ser.escribirObjeto(listaDeagendas, "Datos.b");
-        
+        baseDedatos.addAgenda(this.getName(), agenda);	
+    	baseDedatos.GuardarDatos();
         doDelete();   
  	}
     
@@ -118,7 +117,7 @@ public class AgenteX extends Agent implements ActionListener
 	if(e.getSource().equals(ventanaCalendario.btnOrganizar))
 	{
 	    Serializador ser = new Serializador();
-	    ArrayList<Persona> listaPersonas = (ArrayList<Persona>)ser.leerObjeto("datos.a");
+	    ArrayList<Persona> listaPersonas = baseDedatos.getListaDePersonas();
     	
     	String nombres = "";
     	for(Persona p : listaPersonas)

@@ -28,7 +28,7 @@ import agentes.Serializador;
 public class BaseDatos {
 
     ArrayList<Persona>listaDePersonas;
-	HashMap<String, ArrayList<Actividad>>listaDeAgendas;
+	HashMap<String, ArrayList<Actividad>>listaDeAgendas; // ejemplo de uso de HashMap: http://programandoointentandolo.com/2013/02/ejemplo-de-uso-de-hashmap-en-java-2.html
 	
 	public BaseDatos() {
 		Serializador ser = new Serializador();
@@ -73,7 +73,11 @@ public class BaseDatos {
 		
 	}
 	
-	public void addAgenda(){
+	public void addAgenda(String nomPersona ,ArrayList<Actividad> agenda){
+		
+		// si no existe la clave addiciona nuevo elemento 
+		// si existe la clave solo cambia su valor
+		listaDeAgendas.put(nomPersona, agenda);
 		
 	}
 	
