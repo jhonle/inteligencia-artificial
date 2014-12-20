@@ -22,7 +22,7 @@ import agentes.Serializador;
  * Para que un Agente Actualize su Base de Datos tal vez solamente deberia crear una nueva instancia
  * de esta clase
  * 
- * 
+ * Lo intentare implementar de Esta manera. 
  * 
  * */
 public class BaseDatos {
