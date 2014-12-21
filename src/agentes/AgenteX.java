@@ -187,7 +187,7 @@ public class AgenteX extends Agent implements ActionListener
   { 
 	  matriz = new String[24][lista.size()];
 	  System.out.println("se imprime la matriz de 24 filas y "+lista.size() );
-	  imprimirMatriz();
+	  imprimirMatriz();//matriz antes de  modificar
 	 
 	  for(String nombre: lista)
 	  {
@@ -204,35 +204,8 @@ public class AgenteX extends Agent implements ActionListener
 		   } 
 	    }	
   System.out.println("====================================");
-  imprimirMatriz();
+  imprimirMatriz();//matriz despues de modificar
   }
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  /*
-	   // coloco los estados (True False) en la matriz
-	  for(String nombre : lista)
-	  {
-		  int x= obtenerSiguienteColumna(0);
-		
-		  //(luego usar->) ArrayList<Actividad> agentax=baseDedatos.getAgenda(nombre);
-		  ArrayList<Actividad> agendax = agenda;//solo para probar. luego remplazar por lo de arriba
-		  
-		  for(int y=0; y<24; y++)
-		  {
-			  String valorDisponible = ""+agendax.get(y).estaDisponible();
-			  matriz[x][y]=valorDisponible;
-			  imprimirMatriz();
-		  }
-		  
-	   }
-	  */
-   
 
 /*
  * devuelve la siguiente columna vacia en la matriz
@@ -248,7 +221,7 @@ private int obtenerSiguienteColumna(int i)
 	
  }
 
- 
+   /* imprime  la matriz por consola*/ 
   private void imprimirMatriz() 
   {
 	for(int y = 0; y<24; y++)
