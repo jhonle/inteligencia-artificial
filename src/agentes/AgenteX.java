@@ -39,6 +39,7 @@ public class AgenteX extends Agent implements ActionListener
  	    ventanaCalendario.btnOrganizar.addActionListener(this); 	 
  	    organizar.btnEnviar.addActionListener(this);
  	    baseDedatos = new BaseDatos();
+
         try
         {
 	  	    Thread.sleep(4000);		
@@ -88,6 +89,33 @@ public class AgenteX extends Agent implements ActionListener
         }
     });
     */
+	    addBehaviour(new SimpleBehaviour() 
+	    {
+	    	private boolean fin = false;
+			@Override
+			public boolean done() 
+			{
+					  
+				    
+				return fin;
+			}
+			
+			@Override
+			public void action() 
+			{
+				 ACLMessage msg = receive();
+				 if (msg != null) 
+				 {
+					System.out.println("agente : "+getLocalName()+" recivio un mensaje : "+msg.getContent() + "  del agente : "+msg.getSender().getLocalName()); 
+				 }
+				 else 
+				 {				    
+				      block();
+				 }		
+				
+			}
+		});
+	  
    }
 
     protected void takeDown() 
@@ -102,13 +130,12 @@ public class AgenteX extends Agent implements ActionListener
   {	
 	if(e.getSource().equals(ventanaCalendario.btnOrganizar))
 	{
-	    Serializador ser = new Serializador();
-	    ArrayList<Persona> listaPersonas = baseDedatos.getListaDePersonas();
+	      Serializador ser = new Serializador();
+	      ArrayList<Persona> listaPersonas = baseDedatos.getListaDePersonas();
     	
 	      organizar = new VentanaOrganizar(listaPersonas);	 
 	      organizar.btnEnviar.addActionListener(this);
     	  organizar.setVisible(true);
-
 	}
 	
 	if(e.getSource().equals(organizar.btnEnviar))
@@ -116,30 +143,27 @@ public class AgenteX extends Agent implements ActionListener
   		 
 		ArrayList<String> lista = new ArrayList<String>();
 		lista = organizar.ComprobrarLista();
-		for(String i : lista)
-		{
-			System.out.println(i);	
-		}
-		 
-  		  
-  		/*AID emisor = new AID();
+		
+		AID emisor = new AID();
         emisor.setLocalName(getLocalName());
-        
-        AID receptor = new AID();
-        receptor.setLocalName("prueba");
-        
-        ACLMessage mensaje = new ACLMessage(ACLMessage.REQUEST); 
-
+		
+        ACLMessage mensaje = new ACLMessage(ACLMessage.REQUEST);
         mensaje.setSender(emisor);
         mensaje.setLanguage("Espaniol");
-        mensaje.addReceiver(receptor);
-        mensaje.setContent("hola");    
-        send(mensaje);
+        mensaje.setContent("obtener horario");
+		for(String i : lista)
+		{
+			System.out.println(i);
+			AID receptor = new AID();
+	        receptor.setLocalName(i);
+	        mensaje.addReceiver(receptor);
+		}		                                 
+		send(mensaje);
         
         System.out.println("Enviando a receptor");
-        System.out.println(mensaje.toString());*/
+        System.out.println(mensaje.toString());
   		  
-  		  organizar.setVisible(false);		  		  
+  		 organizar.setVisible(false);		  		  
 	}	
   }
 }
