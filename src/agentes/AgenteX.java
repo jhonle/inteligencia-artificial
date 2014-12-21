@@ -107,8 +107,8 @@ public class AgenteX extends Agent implements ActionListener
 
     protected void takeDown() 
     {
-        baseDedatos.addAgenda(this.getName(), agenda);	
-    	System.out.println("Desde algun el agente :"+getName());
+        baseDedatos.addAgenda(this.getLocalName(), agenda);	
+    	System.out.println("Desde algun el agente :"+getLocalName());
         baseDedatos.guardarlistaDeAgendas();
         doDelete();   
  	}
@@ -135,20 +135,20 @@ public class AgenteX extends Agent implements ActionListener
 	}
 	if(e.getSource().equals(ventanaCalendario.btnAtras))
 	{  
-	    String smg = "hvp";
-       enviarMensage(smg);
+	   String smg = "habiltarVprincipal";
+       enviarMensage(smg,"agentePricipal");
            		
 	}
 	
   }
 
-private void enviarMensage(String smg) {
+private void enviarMensage(String smg,String destino) {
 	
 	AID emisor = new AID();
     emisor.setLocalName(getLocalName());
    
     AID receptor = new AID();
-    receptor.setLocalName("agentePrincipal");
+    receptor.setLocalName(destino);
     
     ACLMessage mensaje = new ACLMessage(ACLMessage.REQUEST); 
 
@@ -158,7 +158,7 @@ private void enviarMensage(String smg) {
     mensaje.setContent(smg);    
     send(mensaje);
     
-    System.out.println( getName()+"(AgenteX) enviado '"+smg+"' agentePrincipal");
+    System.out.println( getLocalName()+"(AgenteX) enviado '"+smg+"' agentePrincipal");
     System.out.println("mensage: "+ mensaje.toString());
 	
 	
