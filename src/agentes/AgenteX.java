@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import vista.VentanaCalendario;
+import vista.VentanaMatriz;
 import vista.VentanaOrganizar;
 import agentes.Receptor.ReceptorComportaminento;
 import agentes.emisor.EmisorComportaminento;
@@ -30,6 +31,9 @@ public class AgenteX extends Agent implements ActionListener
   private ArrayList<Persona> p = new ArrayList<Persona>();
   private VentanaOrganizar organizar = new VentanaOrganizar(p);  
   protected BaseDatos baseDedatos;
+  private int i=0;
+  private String matriz[][] = new String [10][24];
+  private VentanaMatriz vMatriz = new VentanaMatriz();
     protected void setup()
     {  
 	 // espero antes de imprimir para que no se solape con los mensajes de jade    	
@@ -39,7 +43,17 @@ public class AgenteX extends Agent implements ActionListener
  	    ventanaCalendario.btnOrganizar.addActionListener(this); 	 
  	    organizar.btnEnviar.addActionListener(this);
  	    baseDedatos = new BaseDatos();
-
+ 	    vMatriz.anadirColumna(getLocalName());
+ 	    
+ 	    int p=0;
+ 	    for(Actividad o : agenda)
+		{
+			matriz[i][p]= ""+o.estaDisponible();
+			p++;
+		}
+ 	    i++;
+		System.out.println("la matriz añadio una columna");
+        i++;  
         try
         {
 	  	    Thread.sleep(4000);		
@@ -106,7 +120,42 @@ public class AgenteX extends Agent implements ActionListener
 				 ACLMessage msg = receive();
 				 if (msg != null) 
 				 {
-					System.out.println("agente : "+getLocalName()+" recivio un mensaje : "+msg.getContent() + "  del agente : "+msg.getSender().getLocalName()); 
+					System.out.println("agente : "+getLocalName()+" recivio el mensaje : "+ msg.getContent() + "  del agente : "+msg.getSender().getLocalName());
+					if(msg.getContent().equals("obtener horario"))
+					{						
+						AID emisor = new AID();
+				        emisor.setLocalName(getLocalName());
+						
+				        ACLMessage mensaje = new ACLMessage(ACLMessage.INFORM);
+				        mensaje.setSender(emisor);
+				        mensaje.setLanguage("Espaniol");
+				        String respuesta="";
+				        for(Actividad a : agenda)
+				        {
+				        	respuesta = respuesta +a.estaDisponible()+" ";
+				        	
+				        }
+				        System.out.println("horario de :"+ getLocalName()+ "es el siguiente : " +respuesta);
+				        mensaje.setContent(respuesta);
+
+						AID receptor = new AID();
+				        receptor.setLocalName(msg.getSender().getLocalName());
+				        mensaje.addReceiver(receptor);					                      
+						send(mensaje);
+	
+					}
+					else
+					{		
+						String a[]=msg.getContent().split(" ");
+						vMatriz.anadirColumna(msg.getSender().getLocalName());
+						for(int o=0;o<24;o++)
+						{
+							matriz[i][o]= a[o];
+							
+						}
+						System.out.println("la matriz añadio una columna");
+                         i++;  
+					}
 				 }
 				 else 
 				 {				    
@@ -158,12 +207,19 @@ public class AgenteX extends Agent implements ActionListener
 	        receptor.setLocalName(i);
 	        mensaje.addReceiver(receptor);
 		}		                                 
-		send(mensaje);
-        
-        System.out.println("Enviando a receptor");
-        System.out.println(mensaje.toString());
-  		  
-  		 organizar.setVisible(false);		  		  
+		send(mensaje);        	  
+		 try
+	     {
+		  	    Thread.sleep(2000);		
+		 } 
+		 catch (InterruptedException f) 
+		 {		 			
+	  		   System.out.println("Error al dormir al agente X ");
+		 }
+		 
+  		organizar.setVisible(false);
+  		vMatriz.setVisible(true);
+  		vMatriz.anadirfilas(matriz,i);
 	}	
   }
 }
