@@ -39,7 +39,7 @@ public class AgenteX extends Agent implements ActionListener
   
   
 
-  private int i=0;
+  private int i=0;// numero de columnas en la matrizjhon +1 (puntero a la siguiente columna)?
   private String matrizjhon[][] = new String [10][24];
   private VentanaMatriz vMatriz = new VentanaMatriz();
 
@@ -51,7 +51,9 @@ public class AgenteX extends Agent implements ActionListener
  	    ventanaCalendario.btnAtras.addActionListener(this);
  	    ventanaCalendario.btnOrganizar.addActionListener(this); 	 
  	    organizar.btnEnviar.addActionListener(this);
- 	    baseDedatos = new BaseDatos();
+ 	    ComLlenarAgenda a = new ComLlenarAgenda(agenda);
+	    addBehaviour(a); 
+	    baseDedatos = new BaseDatos();
 
  	    vMatriz.anadirColumna(getLocalName());
  	    
@@ -59,10 +61,10 @@ public class AgenteX extends Agent implements ActionListener
  	    for(Actividad o : agenda)
 		{
 			matrizjhon[i][p]= ""+o.estaDisponible();
-			p++;
+			p++;//tamaño de la agenda-1
 		}
  	    i++;
-		System.out.println("la matriz a�adio una columna");
+		System.out.println("la matriz añadio una columna");// de this Agente
         i++;  
         try
         {
@@ -72,11 +74,12 @@ public class AgenteX extends Agent implements ActionListener
 	    {		 			
   		   System.out.println("Erro al dormir al agente X ");
 	    }
-        ComLlenarAgenda a = new ComLlenarAgenda(agenda);
-	    addBehaviour(a);  
+         
+        vMatriz.setVisible(true);
+        vMatriz.repaint();
 	    
    
-	    addBehaviour(new SimpleBehaviour() 
+	    addBehaviour(new SimpleBehaviour() // comportamiento que recibe mensajes
 	    {
 	    	private boolean fin = false;
 			@Override
@@ -118,7 +121,8 @@ public class AgenteX extends Agent implements ActionListener
 	
 					}
 					else
-					{		
+					{	
+						// Cuando ya no hay mensajes no?
 						String a[]=msg.getContent().split(" ");
 						vMatriz.anadirColumna(msg.getSender().getLocalName());
 						for(int o=0;o<24;o++)
@@ -126,7 +130,7 @@ public class AgenteX extends Agent implements ActionListener
 							matrizjhon[i][o]= a[o];
 							
 						}
-						System.out.println("la matriz a�adio una columna");
+						System.out.println("la matriz añadio una columna");
                          i++;  
 					}
 				 }
@@ -145,7 +149,7 @@ public class AgenteX extends Agent implements ActionListener
     protected void takeDown() 
     {
         baseDedatos.addAgenda(this.getLocalName(), agenda);	
-    	System.out.println("Desde algun el agente :"+getLocalName());
+    	System.out.println("Desde algun el agente :"+getLocalName()+" -> modifico baseDeDatos");
         baseDedatos.guardarlistaDeAgendas();
         doDelete();   
  	}
@@ -185,7 +189,7 @@ public class AgenteX extends Agent implements ActionListener
 	        send(mensaje);
 	        System.out.println( "Se envio mensaje a:"+i);
 		}	
-		send(mensaje);        	  
+		send(mensaje);// se envia a todos los seleccionados  el mensaje"obtener horario"        	  
 		 try
 	     {
 		  	    Thread.sleep(2000);		
@@ -197,15 +201,14 @@ public class AgenteX extends Agent implements ActionListener
 		 
  		organizar.setVisible(false);
  		vMatriz.setVisible(true);
- 		//vMatriz.anadirfilas(matrizjhon,i);
+ 		vMatriz.anadirfilas(matrizjhon,i);
+ 		System.out.println("###MATRIZ DE JHON ");
+ 		
+ 		
 	
  		System.out.println("Enviando a receptor");
         System.out.println(mensaje.toString());
-  		  
-  		 organizar.setVisible(false);		  		  
-	
-  
-  		  
+  		   
   		 generarMatriz(lista);
 	
 	 }	
@@ -265,7 +268,7 @@ public class AgenteX extends Agent implements ActionListener
    { 
 	  matrizmarce = new String[24][lista.size()];
 	  System.out.println("se imprime la matriz de 24 filas y "+lista.size() );
-	  imprimirMatriz();//matriz antes de  modificar
+	  imprimirMatriz(matrizmarce);//matriz antes de  modificar
 	 
 	  for(String nombre: lista)
 	  {
@@ -282,21 +285,21 @@ public class AgenteX extends Agent implements ActionListener
 		   } 
 	    }	
     System.out.println("====================================");
-    imprimirMatriz();//matriz despues de modificar
+    imprimirMatriz(matrizmarce);//matriz despues de modificar
  }
 
 
 
    /* imprime  la matriz por consola*/ 
 
-   private void imprimirMatriz() 
+   private void imprimirMatriz(String matriz[][]) 
    {
-	for(int y = 0; y<24; y++)
+	for(int y = 0; y<matriz.length; y++)
     {
 		System.out.print(y+":00 ");
-	  for(int x = 0; x<matrizmarce[0].length; x++)
+	  for(int x = 0; x<matriz[0].length; x++)
 	   {
-        System.out.print(matrizmarce[y][x]+" ");
+        System.out.print(matriz[y][x]+" ");
 	   }
 	   System.out.println(" ");
 	    
