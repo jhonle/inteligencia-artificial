@@ -169,8 +169,9 @@ public class AgenteX extends Agent implements ActionListener
   
 	if(e.getSource().equals(ventanaCalendario.btnAtras))
 	{  
+		System.out.println("agente "+getLocalName()+" enviando mensage a agentePrincipal");
 	   String smg = "habiltarVprincipal";
-       enviarMensage(smg,"agentePricipal");
+       enviarMensage(smg,"agentePrincipal");
       
     }
   
@@ -192,13 +193,11 @@ public class AgenteX extends Agent implements ActionListener
 	    mensaje.setContent(smg);    
 	    send(mensaje);
 	    
-	    System.out.println( getLocalName()+"(AgenteX) enviado '"+smg+"' agentePrincipal");
+	    System.out.println( getLocalName()+"(AgenteX) enviado '"+smg+"'agentePrincipal");
 	    System.out.println("mensage: "+ mensaje.toString());
-		
-		
-	}
-  
-  
+	    
+	    ventanaCalendario.setVisible(false);
+  }
   
 }//fin de la clase
   

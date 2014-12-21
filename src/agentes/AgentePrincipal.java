@@ -8,6 +8,8 @@ import datos.BaseDatos;
 import datos.Serializador;
 import jade.core.*;
 import jade.core.Runtime;
+import jade.core.behaviours.SimpleBehaviour;
+import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 
@@ -22,12 +24,46 @@ public class AgentePrincipal extends Agent implements ActionListener
    protected void setup()
    {	   
 
-	 
-
 	   baseDeDatos = new BaseDatos();
 	   listaPersonas = baseDeDatos.getListaDePersonas();
-	   CargarAgentes();
+	   CargarAgentes();// no deveria mostrar todas las ventanas
 	   addControlesDeVentanas();
+	
+	   
+	   addBehaviour(new SimpleBehaviour() 
+	    {
+	    	private boolean fin = false;
+			@Override
+			public boolean done() 
+			{
+					  
+				    
+				return fin;
+			}
+			
+			@Override
+			public void action() 
+			{
+				 ACLMessage msg = receive();
+				 if (msg != null) 
+				 {
+					System.out.println("##agente Principar : "+getLocalName()+" recivio un mensaje : "+msg.getContent() + "  del agente : "+msg.getSender().getLocalName()); 
+                    System.out.println("eñ mesage fue:"+msg.getContent());
+					if(msg.getContent().equals("habiltarVprincipal")){
+                	  ventanaPricipal.setVisible(true);
+                	   
+                   }				    
+				 
+				 }
+				 else 
+				 {				    
+				      block();
+				 }		
+			}
+		});
+	   
+	   
+	   
    }
    protected void takeDown() 
    {
