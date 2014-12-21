@@ -133,7 +133,36 @@ public class AgenteX extends Agent implements ActionListener
     	  
     	organizar.lblnombres.setText(nombres);
 	}
+	if(e.getSource().equals(ventanaCalendario.btnAtras))
+	{  
+	    String smg = "hvp";
+       enviarMensage(smg);
+           		
+	}
+	
   }
+
+private void enviarMensage(String smg) {
+	
+	AID emisor = new AID();
+    emisor.setLocalName(getLocalName());
+   
+    AID receptor = new AID();
+    receptor.setLocalName("agentePrincipal");
+    
+    ACLMessage mensaje = new ACLMessage(ACLMessage.REQUEST); 
+
+    mensaje.setSender(emisor);
+    mensaje.setLanguage("Espaniol");
+    mensaje.addReceiver(receptor);
+    mensaje.setContent(smg);    
+    send(mensaje);
+    
+    System.out.println( getName()+"(AgenteX) enviado '"+smg+"' agentePrincipal");
+    System.out.println("mensage: "+ mensaje.toString());
+	
+	
+}
 }
 
 
