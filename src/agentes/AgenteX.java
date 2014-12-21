@@ -8,8 +8,11 @@ import jade.lang.acl.ACLMessage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.omg.CORBA.OMGVMCID;
 
 import vista.VentanaCalendario;
 import vista.VentanaOrganizar;
@@ -30,16 +33,19 @@ public class AgenteX extends Agent implements ActionListener
   private ArrayList<Persona> p = new ArrayList<Persona>();
   private VentanaOrganizar organizar = new VentanaOrganizar(p);  
   protected BaseDatos baseDedatos;
+  String [][] matriz;
+  
+  
     protected void setup()
     {  
-	 // espero antes de imprimir para que no se solape con los mensajes de jade    	
+	 
   	    ventanaCalendario.setVisible(true);
   	    ventanaCalendario.ColocarNombre(getLocalName());
  	    ventanaCalendario.btnAtras.addActionListener(this);
  	    ventanaCalendario.btnOrganizar.addActionListener(this); 	 
  	    organizar.btnEnviar.addActionListener(this);
  	    baseDedatos = new BaseDatos();
-
+       
         try
         {
 	  	    Thread.sleep(4000);		
@@ -51,44 +57,7 @@ public class AgenteX extends Agent implements ActionListener
         ComLlenarAgenda a = new ComLlenarAgenda(agenda);
 	    addBehaviour(a);  
 	    
-   	    //comportaminentoImprimir b = new comportaminentoImprimir(agenda);
-        //addBehaviour(b);
-  
-  /*  addBehaviour(new SimpleBehaviour()
-     {
-				
-		@Override
-		public void action() 
-		{
-				
-		}		
-		@Override
-		public boolean done() 
-		{		
-			return true;
-		}
-	});*/
-     
-   /* addBehaviour(new SimpleBehaviour() 
-    {
-        private boolean fin = false;
-        public void action()
-        {
-            System.out.println(" Preparandose para recibir");
-            ACLMessage mensaje = receive();
-            if (mensaje!= null)
-            {
-                System.out.println(getLocalName() + ": acaba de recibir el siguiente mensaje: ");
-                System.out.println(mensaje.getContent());//toString());
-                fin = true;
-            }            
-        }
-        public boolean done()
-        {
-            return fin;
-        }
-    });
-    */
+   
 	    addBehaviour(new SimpleBehaviour() 
 	    {
 	    	private boolean fin = false;
@@ -106,7 +75,13 @@ public class AgenteX extends Agent implements ActionListener
 				 ACLMessage msg = receive();
 				 if (msg != null) 
 				 {
-					System.out.println("agente : "+getLocalName()+" recivio un mensaje : "+msg.getContent() + "  del agente : "+msg.getSender().getLocalName()); 
+                     if(msg.getContent().equals("obtener horario")){
+                    	 
+                      String emisor= msg.getSender().getLocalName();
+                       System.out.println(" El agente "+ getLocalName()+"recivio un mensage:-> "+msg.getContent());	 
+                    
+                     } 
+					 
 				 }
 				 else 
 				 {				    
@@ -114,6 +89,8 @@ public class AgenteX extends Agent implements ActionListener
 				 }		
 				
 			}
+
+			
 		});
 	  
    }
@@ -133,7 +110,7 @@ public class AgenteX extends Agent implements ActionListener
 	      Serializador ser = new Serializador();
 	      ArrayList<Persona> listaPersonas = baseDedatos.getListaDePersonas();
     	
-	      organizar = new VentanaOrganizar(listaPersonas);	 
+	      organizar = new VentanaOrganizar(listaPersonas);//	 
 	      organizar.btnEnviar.addActionListener(this);
     	  organizar.setVisible(true);
 
@@ -158,14 +135,20 @@ public class AgenteX extends Agent implements ActionListener
 			AID receptor = new AID();
 	        receptor.setLocalName(i);
 	        mensaje.addReceiver(receptor);
+	        send(mensaje);
+	        System.out.println( "Se envio mensaje a:"+i);
 		}		                                 
-		send(mensaje);
-        
+		
         System.out.println("Enviando a receptor");
         System.out.println(mensaje.toString());
   		  
   		 organizar.setVisible(false);		  		  
-	}	
+	
+  
+  		  
+  		 generarMatriz(lista);
+	
+	 }	
   
 	if(e.getSource().equals(ventanaCalendario.btnAtras))
 	{  
@@ -199,7 +182,94 @@ public class AgenteX extends Agent implements ActionListener
 	    ventanaCalendario.setVisible(false);
   }
   
+  
+  private void generarMatriz(ArrayList<String> lista) 
+  { 
+	  matriz = new String[24][lista.size()];
+	  System.out.println("se imprime la matriz de 24 filas y "+lista.size() );
+	  imprimirMatriz();
+	 
+	  for(String nombre: lista)
+	  {
+	    //ArryList<Actividad> agendaX=baseDedatos.getAgenda(nombre);
+	   
+		  for(int x = 0; x<lista.size(); x++)
+		   {
+			  for(int y = 0; y<24; y++)
+			    {
+	         
+	      	      matriz[y][x]=""+ agenda.get(x).estaDisponible(); 
+		        }
+		     
+		   } 
+	    }	
+  System.out.println("====================================");
+  imprimirMatriz();
+  }
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  /*
+	   // coloco los estados (True False) en la matriz
+	  for(String nombre : lista)
+	  {
+		  int x= obtenerSiguienteColumna(0);
+		
+		  //(luego usar->) ArrayList<Actividad> agentax=baseDedatos.getAgenda(nombre);
+		  ArrayList<Actividad> agendax = agenda;//solo para probar. luego remplazar por lo de arriba
+		  
+		  for(int y=0; y<24; y++)
+		  {
+			  String valorDisponible = ""+agendax.get(y).estaDisponible();
+			  matriz[x][y]=valorDisponible;
+			  imprimirMatriz();
+		  }
+		  
+	   }
+	  */
+   
+
+/*
+ * devuelve la siguiente columna vacia en la matriz
+ * */
+private int obtenerSiguienteColumna(int i) 
+{
+	if(matriz[0][i]==null){
+		return i;
+		
+	}else{
+		return obtenerSiguienteColumna(i+1);
+	}
+	
+ }
+
+ 
+  private void imprimirMatriz() 
+  {
+	for(int y = 0; y<24; y++)
+    {
+		System.out.print(y+":00 ");
+	  for(int x = 0; x<matriz[0].length; x++)
+	   {
+          System.out.print(matriz[y][x]+" ");
+	   }
+	   System.out.println(" ");
+	    
+    }	
+  } 
+	
+
+
 }//fin de la clase
+
+  
+  
+
   
   
   
