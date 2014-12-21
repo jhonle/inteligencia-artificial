@@ -197,7 +197,7 @@ public class AgenteX extends Agent implements ActionListener
 		 
  		organizar.setVisible(false);
  		vMatriz.setVisible(true);
- 		vMatriz.anadirfilas(matrizjhon,i);
+ 		//vMatriz.anadirfilas(matrizjhon,i);
 	
  		System.out.println("Enviando a receptor");
         System.out.println(mensaje.toString());
