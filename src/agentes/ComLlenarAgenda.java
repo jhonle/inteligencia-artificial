@@ -34,7 +34,9 @@ public class ComLlenarAgenda extends OneShotBehaviour
 		     	 double  horaAux = (double)hora;
 		     	 double  minAux = (double)(minutos/(double)100);//todos deven ser doubles para que de como resultado un double
 		         double auxMinutos=(double)horaAux+minAux;
-		     	 agenda.add(new Actividad(auxMinutos,true));
+		         Actividad a = new Actividad(auxMinutos,true);
+		     	 agenda.add(a);
+		     	 System.out.println("se añadio correctamente");
 		      }
 		   }
 	  }	  

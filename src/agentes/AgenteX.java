@@ -16,6 +16,7 @@ import org.omg.CORBA.OMGVMCID;
 
 import vista.VentanaCalendario;
 import vista.VentanaMatriz;
+import vista.VentanaModificar;
 import vista.VentanaOrganizar;
 import agentes.Receptor.ReceptorComportaminento;
 import agentes.emisor.EmisorComportaminento;
@@ -23,8 +24,7 @@ import datos.BaseDatos;
 import datos.Serializador;
 
 public class AgenteX extends Agent implements ActionListener
-{
-  
+{  
   /**
    * representa la agenda de una persona 
    * por ahora solo la de 1 dia(00:00 hrs a 23:30 hrs)
@@ -33,29 +33,41 @@ public class AgenteX extends Agent implements ActionListener
   protected ArrayList<Actividad> agenda = new ArrayList<Actividad>();
   private ArrayList<Persona> p = new ArrayList<Persona>();
   private VentanaOrganizar organizar = new VentanaOrganizar(p);  
-  protected BaseDatos baseDedatos;
-
+  protected BaseDatos baseDedatos; 
   String [][] matrizmarce;
-  
-  
-
   private int i=0;
   private String matrizjhon[][] = new String [10][24];
   private VentanaMatriz vMatriz = new VentanaMatriz();
-
+  private VentanaModificar b = new VentanaModificar(agenda,0);
+  private static int INTERVALO_DE_TIEMPO=60; //INTERVALO DEL TIEMPO PARA LA AGENDA, EN MINUTO  
     protected void setup()
     {  
-	 
+        try
+        {
+	  	    Thread.sleep(1000);		
+	    } 
+        catch (InterruptedException e) 
+	    {		 			
+  		   System.out.println("Error al dormir al agente X ");
+	    }
+        
+        //ComLlenarAgenda a = new ComLlenarAgenda(agenda);
+	    //addBehaviour(a);
+        llenarHorarios();
+        funcionalidadTabla();
+	    b.btnAceptar.addActionListener(this);    	    	
   	    ventanaCalendario.setVisible(true);
   	    ventanaCalendario.ColocarNombre(getLocalName());
+	    ventanaCalendario.LlenarTabla(agenda);	   
  	    ventanaCalendario.btnAtras.addActionListener(this);
- 	    ventanaCalendario.btnOrganizar.addActionListener(this); 	 
+ 	    ventanaCalendario.btnOrganizar.addActionListener(this);
+ 	    
  	    organizar.btnEnviar.addActionListener(this);
  	    baseDedatos = new BaseDatos();
-
  	    vMatriz.anadirColumna(getLocalName());
  	    
- 	    int p=0;
+
+	    int p=0;
  	    for(Actividad o : agenda)
 		{
 			matrizjhon[i][p]= ""+o.estaDisponible();
@@ -64,26 +76,12 @@ public class AgenteX extends Agent implements ActionListener
  	    i++;
 		System.out.println("la matriz aï¿½adio una columna");
         i++;  
-        try
-        {
-	  	    Thread.sleep(4000);		
-	    } 
-        catch (InterruptedException e) 
-	    {		 			
-  		   System.out.println("Erro al dormir al agente X ");
-	    }
-        ComLlenarAgenda a = new ComLlenarAgenda(agenda);
-	    addBehaviour(a);  
-	    
-   
 	    addBehaviour(new SimpleBehaviour() 
 	    {
 	    	private boolean fin = false;
 			@Override
 			public boolean done() 
 			{
-					  
-				    
 				return fin;
 			}
 			
@@ -203,15 +201,10 @@ public class AgenteX extends Agent implements ActionListener
         System.out.println(mensaje.toString());
   		  
   		 organizar.setVisible(false);		  		  
-	
-  
-  		  
+	  		  
   		 generarMatriz(lista);
 	
 	 }	
-	
-	
-	
 	if(e.getSource().equals(ventanaCalendario.btnAtras))
 	{  
 		System.out.println("agente "+getLocalName()+" enviando mensage a agentePrincipal");
@@ -219,22 +212,18 @@ public class AgenteX extends Agent implements ActionListener
        enviarMensage(smg,"agentePrincipal");
       
     }
+	if(e.getSource().equals(b.btnAceptar))
+	{
+		b.modificarActividad();
+		b.setVisible(false);
+		ventanaCalendario.vaciarTabla();
+	    ventanaCalendario.LlenarTabla(agenda);
+	}
 	
-	
-	}	
+}	
 		
-
-		
-        
-	
-	 
-  
-	
-  
-  
-  
-
-  private void enviarMensage(String smg,String destino) {
+  private void enviarMensage(String smg,String destino) 
+  {
 		
 		AID emisor = new AID();
 	    emisor.setLocalName(getLocalName());
@@ -253,14 +242,7 @@ public class AgenteX extends Agent implements ActionListener
 	    System.out.println("mensage: "+ mensaje.toString());
 	    
 	    ventanaCalendario.setVisible(false);
-  }
-	    
-	    
-	    
-	
-	
-
-
+  }	    
    private void generarMatriz(ArrayList<String> lista) 
    { 
 	  matrizmarce = new String[24][lista.size()];
@@ -274,8 +256,7 @@ public class AgenteX extends Agent implements ActionListener
 		  for(int x = 0; x<lista.size(); x++)
 		   {
 			  for(int y = 0; y<24; y++)
-			    {
-	         
+			    {	         
 	      	      matrizmarce[y][x]=""+ agenda.get(x).estaDisponible(); 
 		        }
 		     
@@ -284,8 +265,6 @@ public class AgenteX extends Agent implements ActionListener
     System.out.println("====================================");
     imprimirMatriz();//matriz despues de modificar
  }
-
-
 
    /* imprime  la matriz por consola*/ 
 
@@ -302,18 +281,68 @@ public class AgenteX extends Agent implements ActionListener
 	    
     }	
   } 
-	
-}//fin de la clase
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
- 
+	private void funcionalidadTabla()
+	{
+		ventanaCalendario.tbTabla.addMouseListener(new java.awt.event.MouseAdapter()
+     	{
+     		public void mouseClicked(java.awt.event.MouseEvent e) 
+     		{ 
+     			int fila=0,columna=0; 
+     			if( e.getButton() == java.awt.event.MouseEvent.BUTTON3 )
+     			{
+     				fila = ventanaCalendario.tbTabla.rowAtPoint(e.getPoint());
+     				
+     				b = new VentanaModificar(agenda,fila);
+     				b.sethora(fila);
+                 	columna = ventanaCalendario.tbTabla.columnAtPoint(e.getPoint());     				     					            
+                 	if ((fila > -1) && (columna > -1))
+                 	{
+                 		ventanaCalendario.popMenu.show(e.getComponent(), e.getX(), e.getY());
+                 		ventanaCalendario.popMenu.setVisible(true);   	               
+    	                ventanaCalendario.JModificar.addActionListener(new ActionListener() 
+    	             	{			
+    	        			@Override
+    	        			public void actionPerformed(ActionEvent arg) 
+    	        			{							
+
+    	        					System.out.println("presiono moficiar");
+    	        					b.setVisible(true);
+    	        					
+    	        					b.btnAceptar.addActionListener(new ActionListener()
+    	        					{										
+										@Override
+										public void actionPerformed(ActionEvent argo) 
+										{
+											if(argo.getSource().equals(b.btnAceptar))
+											{
+												b.modificarActividad();
+												ventanaCalendario.vaciarTabla();
+			    	        					ventanaCalendario.LlenarTabla(agenda);
+			    	        					b.setVisible(false);
+											}											
+										}
+									});    	        					
+    	        			}
+    	        		});
+                 	}
+ 	                
+	            } 
+     	}
+     	});
+	}
+	 private void llenarHorarios() 
+	 {
+		  for(int hora=0; hora<24;hora++)
+		  {
+		 	 for(int minutos=0; minutos<60;minutos=minutos+INTERVALO_DE_TIEMPO)
+		 	 {
+		     	 double  horaAux = (double)hora;
+		     	 double  minAux = (double)(minutos/(double)100);//todos deven ser doubles para que de como resultado un double
+		         double auxMinutos=(double)horaAux+minAux;
+		         Actividad a = new Actividad(auxMinutos,true);
+		     	 agenda.add(a);
+		     	 System.out.println("se añadio correctamente");
+		      }
+		   }
+	  }	  
+}//fin de la clase  

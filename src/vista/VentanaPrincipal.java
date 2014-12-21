@@ -54,22 +54,22 @@ public class VentanaPrincipal extends JFrame implements ActionListener
 	   lblMensaje.setVisible(false);
 	   
 	   lblNombre = new JLabel("Ingrese nombre de usuario");
-	   lblNombre.setBounds(36,101,130,30);
+	   lblNombre.setBounds(21,97,157,30);
 	   principal.add(lblNombre);
 	   lblNombre.setVisible(false);
 	   
 	   lblContrasena = new JLabel("Ingrese la contrase�a");
-	   lblContrasena.setBounds(36,189,130,30);
+	   lblContrasena.setBounds(21,189,157,30);
 	   principal.add(lblContrasena);
 	   lblContrasena.setVisible(false);
        
 	   txtNombre = new JTextField();
-	   txtNombre.setBounds(176,97,130,30);
+	   txtNombre.setBounds(202,97,130,30);
 	   principal.add(txtNombre);
 	   txtNombre.setVisible(false);
 	   
 	   txtContrasena = new JTextField();
-	   txtContrasena.setBounds(176,189,130,30);
+	   txtContrasena.setBounds(202,189,130,30);
 	   principal.add(txtContrasena);
 	   txtContrasena.setVisible(false);
 	   
