@@ -22,11 +22,11 @@ public class AgentePrincipal extends Agent implements ActionListener
    protected void setup()
    {	   
 
-	   CargarAgentes();
+	 
 
 	   baseDeDatos = new BaseDatos();
 	   listaPersonas = baseDeDatos.getListaDePersonas();
-
+	   CargarAgentes();
 	   addControlesDeVentanas();
    }
    protected void takeDown() 
@@ -77,8 +77,7 @@ public class AgentePrincipal extends Agent implements ActionListener
    }
    private void CargarAgentes()
    {
-	   Serializador ser = new Serializador();
-       ArrayList<Persona> listaPersonas = (ArrayList<Persona>) ser.leerObjeto("datos.a");       
+     
        for(Persona p : listaPersonas)
        {
     	   ComportamientoCrearAgentes c = new ComportamientoCrearAgentes(getContainerController(),p.getNombre());
