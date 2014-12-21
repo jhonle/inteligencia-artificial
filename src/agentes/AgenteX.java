@@ -44,7 +44,7 @@ public class AgenteX extends Agent implements ActionListener
     {  
         try
         {
-	  	    Thread.sleep(1000);		
+	  	    Thread.sleep(500);		
 	    } 
         catch (InterruptedException e) 
 	    {		 			
@@ -55,8 +55,7 @@ public class AgenteX extends Agent implements ActionListener
 	    //addBehaviour(a);
         llenarHorarios();
         funcionalidadTabla();
-	    b.btnAceptar.addActionListener(this);    	    	
-  	    ventanaCalendario.setVisible(true);
+	    b.btnAceptar.addActionListener(this);    	    	  	    
   	    ventanaCalendario.ColocarNombre(getLocalName());
 	    ventanaCalendario.LlenarTabla(agenda);	   
  	    ventanaCalendario.btnAtras.addActionListener(this);
@@ -114,6 +113,11 @@ public class AgenteX extends Agent implements ActionListener
 				        mensaje.addReceiver(receptor);					                      
 						send(mensaje);
 	
+					}
+					else if(msg.getContent().equals("login"))
+					{
+						System.out.println("recivio el mensaje");
+						ventanaCalendario.setVisible(true);
 					}
 					else
 					{		

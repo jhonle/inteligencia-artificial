@@ -11,13 +11,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.jvnet.substance.SubstanceLookAndFeel;
+
 import java.awt.Font;
 
-public class VentanaPrincipal extends JFrame implements ActionListener 
-{
-	private JButton btnRegistro,btnLogin,btnSalir;
-	public JButton btnAceptar;
-	private JLabel lblMensaje,lblNombre,lblContrasena;
+public class VentanaPrincipal extends JFrame 
+{	
+	public JButton btnAceptar,btnRegistro,btnLogin,btnSalir,btnAtras;
+	public JLabel lblMensaje,lblNombre,lblContrasena;
 	private JPanel principal;
 	public JTextField txtNombre,txtContrasena;//para el 
 	//private 
@@ -28,6 +29,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener
        setVisible(true);
        getContentPane().setLayout(null);
        
+       SubstanceLookAndFeel.setSkin("org.jvnet.substance.skin.SaharaSkin");
+		
        principal = new JPanel();
        principal.setBounds(0,0,384,362);
        principal.setLayout(null);
@@ -40,7 +43,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener
        principal.add(btnLogin);
        
        btnRegistro = new JButton("REGISTRARSE");
-       btnRegistro.setBounds(109,189,124,30);
+       btnRegistro.setBounds(109,189,124,38);
        principal.add(btnRegistro);
        
        btnSalir = new JButton("SALIR");
@@ -58,7 +61,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener
 	   principal.add(lblNombre);
 	   lblNombre.setVisible(false);
 	   
-	   lblContrasena = new JLabel("Ingrese la contrase�a");
+	   lblContrasena = new JLabel("Ingrese la contrasenia");
 	   lblContrasena.setBounds(21,189,157,30);
 	   principal.add(lblContrasena);
 	   lblContrasena.setVisible(false);
@@ -76,66 +79,13 @@ public class VentanaPrincipal extends JFrame implements ActionListener
        btnAceptar = new JButton("ACEPTAR");
        btnAceptar.setBounds(154,278,93,30);
        principal.add(btnAceptar);
+       
+       btnAtras = new JButton("ATRAS");
+       btnAtras.setBounds(281, 278, 93, 30);
+       btnAtras.setVisible(false);
+       principal.add(btnAtras);
+       
        btnAceptar.setVisible(false);
-	   
-       btnLogin.addActionListener(this);
-       btnRegistro.addActionListener(this);
-       btnSalir.addActionListener(this);
 
 	}	
-	
-	//eventos
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-    	if(e.getSource().equals(btnRegistro))
-    	{
-    		lblMensaje.setVisible(true);
-    		lblNombre.setVisible(true);
-    		lblContrasena.setVisible(true);
-    		txtNombre.setVisible(true);
-    		txtContrasena.setVisible(true);
-    		btnAceptar.setVisible(true);
-    		
-    		btnLogin.setVisible(false);
-    		btnRegistro.setVisible(false);
-    		btnSalir.setVisible(false);  		
-    		
-    	 }else
-    	  { if(e.getSource().equals(btnLogin)){
-    		  //Parte de login 
-    		     
-    		 } 
-    	    if (e.getSource().equals(btnSalir)){
-    	    	System.exit(0);
-    	    	
-    	    }
-    	  }
-     }
-	
-	
-	
-	
-	/**
-	 * verifica si se lleno correctamente los campos
-	 * @return true = llenado correcto
-	 *          false= llenado incorreto y muestra mensage
-	 * */
-   public boolean llenadoCompleto() {
-       boolean res= true;	
-	   if( txtNombre.getText().equals("") || txtContrasena.getText().equals("")){
-		  res = false; 
-	       JOptionPane.showMessageDialog(null," Debe llenar  todos los campos" );
-
-	   }
-	return res;
-   }
-
-//solo para prubas
-	public static void main (String []args){
-	
-		JFrame v = new VentanaPrincipal();
-		v.setVisible(true);
-		
-    }
 }
