@@ -30,14 +30,12 @@ public class ComportamientoCrearAgentes extends SimpleBehaviour
 		catch (jade.wrapper.StaleProxyException e) 
 		{
 	        System.err.println("Error al ejecutar el agente...");
-	    }
-		
+	    }		
 	}
 
 	@Override
 	public boolean done() 
-	{
-	
+	{	
 		return true;
 	}
 

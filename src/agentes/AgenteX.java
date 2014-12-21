@@ -32,24 +32,20 @@ public class AgenteX extends Agent implements ActionListener
 
   protected ArrayList<Actividad> agenda = new ArrayList<Actividad>();
 
-  private ArrayList<Persona> p = new ArrayList<Persona>();// por que?
- 
-  public VentanaCalendario ventanaCalendario = new VentanaCalendario();// ventana pricipar del agente
+  private ArrayList<Persona> p = new ArrayList<Persona>();
+
+  public VentanaCalendario ventanaCalendario = new VentanaCalendario();// ventana pricipar del agente  
   private VentanaOrganizar organizar = new VentanaOrganizar(p);  // por que le manda p si esta vasia en un principio
   private VentanaMatriz vMatriz; //lo llenamos solo si es el organizador;
   private VentanaModificar b = new VentanaModificar(agenda,0);
   private static int INTERVALO_DE_TIEMPO=60; //INTERVALO DEL TIEMPO PARA LA AGENDA, EN MINUTO  
   
-  
   protected BaseDatos baseDedatos;// Talvez ya no sea nesesario;
 
   String [][] matrizmarce;// segun la base de datos
-  
-  
-
+    
   private int i=0;// numero de columna vasia en la  la matrizjhon 
-  private String matrizjhon[][];// lo llenamos solo si es el organizador
-  
+  private String matrizjhon[][];// lo llenamos solo si es el organizador 
   
   private boolean esOrganizador = false; // true si es el organizador. False si no lo es nadie es organizador al empezar
                                             // ojo con esto. en  ningun lado le buelvo a poner en false
@@ -71,8 +67,7 @@ public class AgenteX extends Agent implements ActionListener
             funcionalidadTabla();          
 
 
-        // iniciando ventanas
-  	    ventanaCalendario.setVisible(true);
+        // iniciando ventanas  	    
   	    ventanaCalendario.ColocarNombre(getLocalName());
  	    ventanaCalendario.btnAtras.addActionListener(this);
  	    ventanaCalendario.LlenarTabla(agenda);
@@ -152,8 +147,7 @@ public class AgenteX extends Agent implements ActionListener
 						{
 							String a[]=msg.getContent().split(" ");
 					        for(int fila=0;fila<24;fila++)
-						    {
-						 	  
+						    {						 	  
 					            matrizjhon[fila][i]= a[fila];
 					    	}
 						    i++;//nueva columna vasia Disponible  
