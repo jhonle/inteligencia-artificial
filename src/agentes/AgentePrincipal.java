@@ -51,7 +51,8 @@ public class AgentePrincipal extends Agent implements ActionListener
 				 {
 					System.out.println("##agente Principar : "+getLocalName()+" recivio un mensaje : "+msg.getContent() + "  del agente : "+msg.getSender().getLocalName()); 
                     System.out.println("eñ mesage fue:"+msg.getContent());
-					if(msg.getContent().equals("habiltarVprincipal")){
+					if(msg.getContent().equals("habiltarVprincipal"))
+					{
                 	  ventanaPricipal.setVisible(true);
                 	   
                    }				    
