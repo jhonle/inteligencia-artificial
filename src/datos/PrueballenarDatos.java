@@ -6,7 +6,7 @@ import agentes.Persona;
 import datos.Serializador;
 
 public class PrueballenarDatos {
-	public static void main (String []args){
+	 public PrueballenarDatos() {
 		Serializador ser = new Serializador();
 		//ArrayList<Persona> listaPersonas = (ArrayList<Persona>)ser.leerObjeto("Datos.a");
 		ArrayList<Persona> listaPersonas = new ArrayList<Persona>();

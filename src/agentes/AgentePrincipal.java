@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 
 import vista.VentanaPrincipal;
 import datos.BaseDatos;
+import datos.PruebaDeSerializacion;
+import datos.PrueballenarDatos;
 import datos.Serializador;
 import jade.core.*;
 import jade.core.Runtime;
@@ -15,6 +17,13 @@ import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 
+
+
+/**
+ * @autor Marcelo Ramos 
+ * @autos Jhon Quinteros
+ * @version 0.0000001
+ * */
 public class AgentePrincipal extends Agent implements ActionListener
 {
 	  BaseDatos baseDeDatos;
@@ -25,7 +34,8 @@ public class AgentePrincipal extends Agent implements ActionListener
       
    protected void setup()
    {	   
-
+       new PruebaDeSerializacion();//crea los archivos necesarios 
+       new PrueballenarDatos();    //llena de datos de prueba- hace no se guarden nuevos datos. borra esto para que funcione la persistencia de datos
 	   baseDeDatos = new BaseDatos();
 	   listaPersonas = baseDeDatos.getListaDePersonas();
 	   CargarAgentes();// no deveria mostrar todas las ventanas
@@ -70,10 +80,9 @@ public class AgentePrincipal extends Agent implements ActionListener
    }
    protected void takeDown() 
    {
-	   Serializador ser = new Serializador();
-       ser.escribirObjeto(listaPersonas,"Datos.a");//Guarda la clase listaPersonas al Archivo Datos.a         
+	   
        baseDeDatos.setListaDePersonas(listaPersonas);
-       System.out.println("Desde Agente Principar :"+getName());
+       System.out.println("Desde Agente Principar se guarda al agente :");
        baseDeDatos.guardarListaPersonas();
 	   doDelete();   
 	}

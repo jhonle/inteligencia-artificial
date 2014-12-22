@@ -10,7 +10,7 @@ import agentes.Persona;
 
 public class PruebaDeSerializacion {
    
-	public static void main (String args[]){
+ public PruebaDeSerializacion() {
     
 		Serializador ser  = new Serializador();
 		if(ser.leerObjeto("Datos.a")==null){
@@ -44,7 +44,7 @@ public class PruebaDeSerializacion {
     	
 	}
 		
-	private static void listarPersonaGuardadas() {
+	private  void listarPersonaGuardadas() {
 		Serializador ser = new Serializador();
 		ArrayList<Persona> listaPersonas = new ArrayList<Persona>();
 		listaPersonas = (ArrayList<Persona>)ser.leerObjeto("Datos.a");
