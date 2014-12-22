@@ -52,12 +52,9 @@ public class VentanaMatriz extends JDialog
 			{
 				  String [] fila = obtenerFila(tabla,y); 
 				  System.out.println("se obtubo la fila N°: "+y);
-				  for(int x = 0; x<tabla[0].length; x++)
-				   {
+				 
 					  modelo.addRow ( fila );
-				      System.out.println("Se introdujo:  un elemente en ("+y+","+x+")" );	  
-				   }
-				  System.out.println("");
+			
 		    
 			}	
 			

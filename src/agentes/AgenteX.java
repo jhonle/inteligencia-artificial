@@ -2,14 +2,18 @@ package agentes;
 
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.swing.JOptionPane;
 
 import org.omg.CORBA.OMGVMCID;
 
@@ -50,7 +54,9 @@ public class AgenteX extends Agent implements ActionListener
   private boolean esOrganizador = false; // true si es el organizador. False si no lo es nadie es organizador al empezar
                                             // ojo con esto. en  ningun lado le buelvo a poner en false
 
-    protected void setup()
+  private String[] matrizReducida;
+  
+  protected void setup()
     {  
 
 	    
@@ -92,21 +98,23 @@ public class AgenteX extends Agent implements ActionListener
  	    
  	
         //comportamientoRecibirMsg
-        addBehaviour(new SimpleBehaviour() 
+        addBehaviour(new CyclicBehaviour() 
 	    {
-	    	private boolean fin = false;
-			@Override
-			public boolean done() 
-			{
-				return fin;
-			} 
-			
-			
-		
-			@Override
+        	
+        	//Devuelve una plantilla de mensaje que coincida con algún mensaje con una perfomativa dada.
+            MessageTemplate filtroInform = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+            MessageTemplate filtroInform2 = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+
+          
+            MessageTemplate plantilla = MessageTemplate.and(filtroInform,filtroInform2);
+        	
+    
+         	@Override
 			public void action() 
 			{
-				 ACLMessage msg = receive();
+         		
+         		 ACLMessage msg = receive();
+				 
 				 if (msg != null) 
 				 {
 				    // si mensaje es Obtener horario
@@ -135,24 +143,38 @@ public class AgenteX extends Agent implements ActionListener
 						send(mensaje);
 	
 					}
-					else if(msg.getContent().equals("login"))
-					{
-						System.out.println("recivio el mensaje");
-						ventanaCalendario.setVisible(true);
-					}
-					else
-					{	
-						//si el mensaje es una respuesta a obtener horario
-						if(msg.getContent().length()>10)// si el mensage tiene un tamaño grande. solo los de respuesta a "obtener horario deberia ser grande"
+					else{	
+						 //si el mensaje es una respuesta a obtener horario
+						if(msg.getContent().length()>10 && msg.getContent().length()<125)// si el mensage tiene un tamaño grande. solo los de respuesta a "obtener horario deberia ser grande"
 						{
 							String a[]=msg.getContent().split(" ");
 					        for(int fila=0;fila<24;fila++)
-						    {						 	  
-					            matrizjhon[fila][i]= a[fila];
-					    	}
-						    i++;//nueva columna vasia Disponible  
+						    {	try{					 	  
+					              matrizjhon[fila][i]= a[fila];
+						        }catch(java.lang.ArrayIndexOutOfBoundsException e){
+						        
+						        	matrizjhon= null;
+						        	esOrganizador= false;
+						        // Poner esto en un boton: VMtriz
+						        //  matrizjhon=null;
+								//JOptionPane.showMessageDialog(null,"Intente de nuevo" );
+                                //esOrganizador= true;
+                                //vMatriz.setVisible(false);
+                                //organizar.setVisible(true);
+						        }
+						    
 						    }
-					     }
+						    i++;//nueva columna vasia Disponible  
+						}else {
+							if(msg.getContent().equals("login"))
+							{
+								System.out.println("recivio el mensaje");
+								ventanaCalendario.setVisible(true);
+							}
+							
+						}
+					     
+					 }
 				  }
 				    else 
 				    {
@@ -193,8 +215,7 @@ public class AgenteX extends Agent implements ActionListener
 	      organizar.btnEnviar.addActionListener(this);
     	  organizar.setVisible(true);
           ventanaCalendario.setVisible(false);	
-          
-          
+         
 	
 	}
 	
@@ -204,7 +225,7 @@ public class AgenteX extends Agent implements ActionListener
         ArrayList<String> lista = new ArrayList<String>();
 		lista = organizar.ComprobrarLista();
 		matrizjhon = new String[24][lista.size()]; // inicializo solo si es organizador
-		
+		 String listAux[]= new  String[lista.size()];
 		// envio de mensaje de "obtener horario"
 		AID emisor = new AID();
         emisor.setLocalName(getLocalName());
@@ -240,7 +261,7 @@ public class AgenteX extends Agent implements ActionListener
  	    //para ponerlo en la VMatriz
  		
  			
- 	    String listAux[]= new  String[lista.size()];
+ 	  
  		
  		
  		for(int i = 0; i<lista.size();i++){
@@ -249,15 +270,20 @@ public class AgenteX extends Agent implements ActionListener
  		}
  		
  		
- 		System.out.println("###MATRIZ DE JHON ");
+ 		System.out.println("###MATRIZ CONFIGURADA ");
  		imprimirMatriz();
  		
+ 		//String [][] matrizReultado = aplicarPropagacion(matrizjhon);
  		
+ 		//System.out.println("###MATRIZ PROPAGACION ");
+ 		//imprimirMatriz(matrizReultado);
  		
  		 //mostramos la matriz
  		vMatriz= new VentanaMatriz();
  		vMatriz.llenarTabla(matrizjhon, listAux);
  		vMatriz.setVisible(true);
+ 		
+ 		this.esOrganizador = false;
  		}
  		
  		
@@ -291,7 +317,82 @@ public class AgenteX extends Agent implements ActionListener
 
 		
 
-  private void enviarMensage(String smg,String destino) 
+  private String[][] aplicarPropagacion(String[][] matrizjhon2) {
+	
+	
+	
+	ArrayList<String []> aux= new ArrayList<String[]>();//nuevasFilas 
+	for( int y=0;y<24;y++){
+	    String[] fila= obtenerFila(matrizjhon2, y);
+	    if(!hayFalse(fila))
+		  {
+			  
+		  	   aux.add(fila);   
+		   
+		  }
+	  }
+	
+	String[][] res = new String[aux.size()][matrizjhon2.length];
+	matrizReducida= new String[aux.size()];//falta implementar
+	
+	  
+	
+		for(int i=0;i<aux.size();i++){
+		  	 insertaFila(i,matrizjhon2,aux.get(i));
+			
+	      	
+	    }
+  
+  
+	
+	return res;
+}
+
+  
+
+private void insertaFila(int numeroFila, String[][] matrizjhon2, String[] fila) {
+	
+	for(int i=0;i<fila.length;i++){
+		matrizjhon2[numeroFila][i]=fila[i];
+	}
+	
+}
+
+private boolean hayFalse(String[] fila) {
+	boolean res = false;
+	for(int i=0; i<fila.length; i++){
+		if(fila[i].equals("false")){
+			System.out.println(i+": es falso?="+fila[i]);
+			res=true;
+		}
+		
+	}
+
+    return res;
+}
+
+/**
+   * reetorna una fila de la tabla[][] ingresada
+   * */
+     private String[] obtenerFila(String[][] tabla, int fila) {
+  		String res[]= new String[tabla[0].length];
+  	    System.out.println("Cantidad de columnas= "+ res.length);
+  		for(int i =0; i <tabla[0].length;i++){
+  	    	 res[i]=tabla[fila][i]; 
+  	     }
+  	   
+  	   return res;
+  	
+  	}
+  
+  
+  
+  
+  
+  
+  
+  
+private void enviarMensage(String smg,String destino) 
   {
 
 		
@@ -319,7 +420,7 @@ public class AgenteX extends Agent implements ActionListener
   private void imprimirMatriz() 
   {
 	
-		for(int y = 0; y<24; y++)
+		for(int y = 0; y<matrizjhon.length; y++)
 	    {
 			System.out.print(y+":00 ");
 		  for(int x = 0; x<matrizjhon[0].length; x++)
@@ -396,40 +497,4 @@ public class AgenteX extends Agent implements ActionListener
 		      }
 		   }
 	  }	  
-}//fin de la clase  
-
-
-
-
-
-
-
-/*
-
-
-   private void generarMatriz(ArrayList<String> lista) 
-   { 
-	  matrizmarce = new String[24][lista.size()];
-	  System.out.println("se imprime la matriz de 24 filas y "+lista.size() );
-	  imprimirMatriz();//matriz antes de  modificar
-	 
-	  for(String nombre: lista)
-	  {
-	    //ArryList<Actividad> agendaX=baseDedatos.getAgenda(nombre);
-	   
-		  for(int x = 0; x<lista.size(); x++)
-		   {
-			  for(int y = 0; y<24; y++)
-			    {	         
-	      	      matrizmarce[y][x]=""+ agenda.get(x).estaDisponible(); 
-		        }
-		     
-		   } 
-	    }	
-    System.out.println("====================================");
-    imprimirMatriz();//matriz despues de modificar
- }
-
-
-
-   /* imprime  la matriz por consola*/ 
+}//fin clase 
