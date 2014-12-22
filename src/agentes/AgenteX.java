@@ -149,7 +149,8 @@ public class AgenteX extends Agent implements ActionListener
 						{
 							String a[]=msg.getContent().split(" ");
 					        for(int fila=0;fila<24;fila++)
-						    {	try{					 	  
+						    {	try{
+						    	//  matrizjhon[fila][i]= null;
 					              matrizjhon[fila][i]= a[fila];
 						        }catch(java.lang.ArrayIndexOutOfBoundsException e){
 						        
@@ -272,13 +273,12 @@ public class AgenteX extends Agent implements ActionListener
  		
  		System.out.println("###MATRIZ CONFIGURADA ");
  		imprimirMatriz();
- 		
- 		//String [][] matrizReultado = aplicarPropagacion(matrizjhon);
- 		
  		//System.out.println("###MATRIZ PROPAGACION ");
- 		//imprimirMatriz(matrizReultado);
+ 		//String [][] matrizReultado = aplicarPropagacion(matrizjhon);
+ 	//	imprimirMatriz(matrizReultado);
  		
- 		 //mostramos la matriz
+ 		
+ 		//mostramos la matriz
  		vMatriz= new VentanaMatriz();
  		vMatriz.llenarTabla(matrizjhon, listAux);
  		vMatriz.setVisible(true);
@@ -433,6 +433,27 @@ private void enviarMensage(String smg,String destino)
 	  
  } 
 	
+  private void imprimirMatriz(String matriz[][]) 
+  {
+	
+		for(int y = 0; y<matriz.length; y++)
+	    {
+			System.out.print(y+":00 ");
+		  for(int x = 0; x<matriz[0].length; x++)
+		   {
+	          System.out.print(matriz[y][x]+" ");
+		   }
+		   System.out.println(" ");
+		    
+	    }	
+	  
+ } 
+  
+  
+  
+  
+  
+  
   private void funcionalidadTabla()
 	{
 		ventanaCalendario.tbTabla.addMouseListener(new java.awt.event.MouseAdapter()

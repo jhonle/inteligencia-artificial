@@ -70,7 +70,6 @@ public class AgentePrincipal extends Agent implements ActionListener
    }
    protected void takeDown() 
    {
-
 	   Serializador ser = new Serializador();
        ser.escribirObjeto(listaPersonas,"Datos.a");//Guarda la clase listaPersonas al Archivo Datos.a         
        baseDeDatos.setListaDePersonas(listaPersonas);
