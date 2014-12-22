@@ -70,9 +70,11 @@ public class VentanaOrganizar extends JDialog
 			if(lista[p].isSelected()==true)
 			{
 				respuesta.add(lista[p].getText());
+				System.out.println("(ClaseVentanaOrganizar)Se adiciona para la matriz a :"+lista[p].getText());
 				p++;
 			}
 		}		
+		
 		return respuesta;
 	}
 }

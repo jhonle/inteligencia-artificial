@@ -36,14 +36,14 @@ class comportaminentoImprimir extends SimpleBehaviour
        	      int minutos;
        	      if(hora<10) 
        	      {
-       	    	  minutos = (int)((agenda.get(i).getHora()*10)%10);
-       	    	  System.out.println("hrs 0"+hora+":"+minutos+"0   |");
+       	    	  minutos = (int)((agenda.get(i).getHora()*10)%10);    
+       	    	  System.out.println("hrs 0"+hora+":"+minutos+"0   |"+"               |"+agenda.get(i).estaDisponible());
        	    	  
        	      }else
        	       {
        	    	    minutos =(int)((agenda.get(i).getHora()*100)%100);
-       	    	    if(minutos==0)System.out.println("hrs "+hora+":"+minutos+"0   |" );
-       	    	    else System.out.println("hrs "+hora+":"+minutos+"   |");
+       	    	    if(minutos==0)System.out.println("hrs "+hora+":"+minutos+"0   |"+agenda.get(i).estaDisponible());
+       	    	    else System.out.println("hrs "+hora+":"+minutos+"   |"+"               |"+agenda.get(i).estaDisponible());
        	       }
        	    } 
        	 

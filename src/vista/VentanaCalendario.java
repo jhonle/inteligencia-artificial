@@ -54,10 +54,18 @@ public class VentanaCalendario extends JDialog
      	LlenarTabla();
      	
 	}
+	
+	
+	/**
+	 * muestra el nombre de la persona
+	 * */
 	public void ColocarNombre(String nombre)
 	{
 		lblPersona.setText("AGENDA DE : "+nombre);
 	}
+	
+	
+	
 	private void LlenarTabla()
 	{
 		String datos[]={"","LIBRE"};
